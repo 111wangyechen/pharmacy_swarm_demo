@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>蜂群智能运营工作台 — 连锁药房会员增长多智能体系统</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <h1>🐝 蜂群智能</h1>
+      <p>连锁药房会员增长多智能体系统</p>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="navigate('home',this)">
+        <div class="nav-icon nav-icon-home">🏠</div>
+        <span class="nav-label">工作台首页</span>
+      </button>
+      <div style="padding:6px 12px 4px;font-size:10px;color:rgba(255,255,255,.3);font-weight:600;letter-spacing:.05em;">专业 AGENT</div>
+      <button class="nav-item" onclick="navigate('weather',this)">
+        <div class="nav-icon nav-icon-weather">🌦</div>
+        <span class="nav-label">气象哨兵</span>
+        <div class="nav-dot dot-alert"></div>
+      </button>
+      <button class="nav-item" onclick="navigate('chronic',this)">
+        <div class="nav-icon nav-icon-chronic">🫀</div>
+        <span class="nav-label">慢病管家</span>
+        <div class="nav-dot dot-active"></div>
+      </button>
+      <button class="nav-item" onclick="navigate('stock',this)">
+        <div class="nav-icon nav-icon-stock">📦</div>
+        <span class="nav-label">库存预言家</span>
+        <div class="nav-dot dot-alert"></div>
+      </button>
+      <button class="nav-item" onclick="navigate('sentiment',this)">
+        <div class="nav-icon nav-icon-sentiment">📢</div>
+        <span class="nav-label">舆情雷达</span>
+        <div class="nav-dot dot-idle"></div>
+      </button>
+      <div style="padding:6px 12px 4px;font-size:10px;color:rgba(255,255,255,.3);font-weight:600;letter-spacing:.05em;">协同 & 进化</div>
+      <button class="nav-item" onclick="navigate('commander',this)">
+        <div class="nav-icon nav-icon-commander">🎯</div>
+        <span class="nav-label">策略指挥官</span>
+        <div class="nav-dot dot-active"></div>
+      </button>
+      <button class="nav-item" onclick="navigate('twin',this)">
+        <div class="nav-icon nav-icon-twin">🧬</div>
+        <span class="nav-label">数字孪生</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">5/5 Agent 在线 · 3 执行中</div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn-outline" style="display:none;padding:6px 10px;font-size:16px;border:none;background:none;cursor:pointer;" onclick="document.getElementById('sidebar').classList.toggle('open')" id="menuBtn">☰</button>
+        <span class="topbar-title" id="topbarTitle">工作台首页</span>
+        <span class="topbar-breadcrumb" id="topbarBread"></span>
+      </div>
+      <div class="topbar-right">
+        <span class="badge badge-green" style="font-size:10px;">● 蜂群在线</span>
+        <button class="btn btn-primary" style="font-size:12px;padding:6px 14px;">触发蜂群协商</button>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- ════════ HOME PAGE ════════ -->
+      <div class="page active" id="page-home">
+        <div class="home-hero">
+          <div class="home-hero-badges">
+            <span class="badge badge-dark">🐝 蜂群智能</span>
+            <span class="badge" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);">多智能体协同系统</span>
+          </div>
+          <h1>蜂群智能运营工作台</h1>
+          <p>五大专业 Agent 各司其职、实时协商、自动决策——从信号感知到策略执行，蜂群协作完成全链路闭环。</p>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card"><div class="metric-label">活跃 Agent</div><div class="metric-value">5 <span style="font-size:12px;font-weight:400;color:var(--text-muted);">/ 5</span></div><div class="metric-hint">全部在线，3个执行中</div></div>
+          <div class="metric-card"><div class="metric-label">今日识别机会</div><div class="metric-value">12 个</div><div class="metric-hint">含过敏、慢病复购、库存风险</div></div>
+          <div class="metric-card"><div class="metric-label">预计覆盖会员</div><div class="metric-value">86,420</div><div class="metric-hint">基于会员标签与购药记录</div></div>
+          <div class="metric-card"><div class="metric-label">预计销售贡献</div><div class="metric-value">¥126 万</div><div class="metric-hint">活动确认后进入门店承接</div></div>
+          <div class="metric-card"><div class="metric-label">需人工确认</div><div class="metric-value" style="color:var(--amber);">5 项</div><div class="metric-hint">券包、补货、触达名单待确认</div></div>
+        </div>
+
+        <!-- Collab indicator -->
+        <div class="collab-strip mt-4">
+          <span class="collab-strip-label">🔄 实时协作</span>
+          <div class="collab-strip-agents">
+            <div class="agent-avatar av-weather">🌦</div>
+            <div class="agent-avatar av-chronic">🫀</div>
+            <div class="agent-avatar av-stock">📦</div>
+            <div class="agent-avatar av-commander">🎯</div>
+          </div>
+          <span class="collab-strip-arrow">→</span>
+          <span class="collab-strip-text">气象哨兵发出寒潮预警 → 慢病管家匹配人群 → 库存预言家确认备货 → 策略指挥官生成方案（2.3s）</span>
+          <button class="btn btn-primary" style="font-size:11px;padding:5px 12px;" onclick="navigate('commander',document.querySelectorAll('.nav-item')[6])">查看协商</button>
+        </div>
+
+        <div class="dash-grid mt-4">
+          <div class="card"><div class="card-body">
+            <div class="section-title"><div class="section-icon">📡</div><div><h2>今日机会信号</h2><p>各 Agent 独立感知，信号实时汇总</p></div></div>
+            <div class="space-y-3 mt-4">
+              <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-weather" style="width:30px;height:30px;font-size:13px;">🌦</div><div class="signal-info"><div class="signal-title">春季过敏信号上升</div><div class="signal-detail">华东区域气温回升，过敏类购药需求增加</div><div class="signal-source">来源：气象哨兵 · 10分钟前</div></div></div><span class="badge badge-red">高优先级</span></div>
+              <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-chronic" style="width:30px;height:30px;font-size:13px;">🫀</div><div class="signal-info"><div class="signal-title">慢病复购窗口到期</div><div class="signal-detail">8,624 名会员进入 25-35 天复购周期</div><div class="signal-source">来源：慢病管家 · 1小时前</div></div></div><span class="badge badge-blue">待触达</span></div>
+              <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-stock" style="width:30px;height:30px;font-size:13px;">📦</div><div class="signal-info"><div class="signal-title">部分门店库存偏低</div><div class="signal-detail">氯雷他定在 37 家门店低于安全库存</div><div class="signal-source">来源：库存预言家 · 30分钟前</div></div></div><span class="badge badge-amber">需确认</span></div>
+              <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-sentiment" style="width:30px;height:30px;font-size:13px;">📢</div><div class="signal-info"><div class="signal-title">流感舆情升温</div><div class="signal-detail">社交媒体流感讨论量周环比上升 180%</div><div class="signal-source">来源：舆情雷达 · 2小时前</div></div></div><span class="badge badge-purple">监测中</span></div>
+            </div>
+          </div></div>
+          <div class="card"><div class="card-body">
+            <div class="section-title"><div class="section-icon">🐝</div><div><h2>蜂群协商结果</h2><p>多 Agent 协商后推荐的最优方案</p></div></div>
+            <div class="featured-card" style="margin-top:12px;">
+              <div class="featured-label">🐝 蜂群联合推荐</div>
+              <div class="featured-title">春季过敏防护活动</div>
+              <p class="featured-desc">气象哨兵感知寒潮 → 慢病管家匹配易感人群 → 库存预言家确认备货 → 策略指挥官生成方案</p>
+              <div class="featured-stats">
+                <div class="featured-stat"><div class="featured-stat-label">覆盖会员</div><div class="featured-stat-value">32,680</div></div>
+                <div class="featured-stat"><div class="featured-stat-label">预计销售</div><div class="featured-stat-value">¥48万</div></div>
+                <div class="featured-stat"><div class="featured-stat-label">协商耗时</div><div class="featured-stat-value">2.3s</div></div>
+              </div>
+              <div class="featured-agents">
+                <div class="agent-avatar av-weather">🌦</div>
+                <div class="agent-avatar av-chronic">🫀</div>
+                <div class="agent-avatar av-stock">📦</div>
+                <div class="agent-avatar av-commander">🎯</div>
+              </div>
+              <button class="btn" style="margin-top:12px;width:100%;justify-content:center;background:#fff;color:var(--accent);font-size:12px;" onclick="navigate('commander',document.querySelectorAll('.nav-item')[6])">查看协商过程并确认</button>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">🔄</div><div><h2>蜂群协作闭环</h2><p>每个环节由专业 Agent 负责，Agent 间自动协商衔接</p></div></div>
+          <div class="steps-grid">
+            <div class="step-card"><div style="display:flex;align-items:center;gap:5px;"><div class="step-num">1</div><div class="agent-avatar av-weather" style="width:20px;height:20px;font-size:9px;">🌦</div></div><div class="step-text">感知外部信号</div><div class="step-agent">气象哨兵+舆情雷达</div></div>
+            <div class="step-card"><div style="display:flex;align-items:center;gap:5px;"><div class="step-num">2</div><div class="agent-avatar av-chronic" style="width:20px;height:20px;font-size:9px;">🫀</div></div><div class="step-text">洞察会员画像</div><div class="step-agent">慢病管家</div></div>
+            <div class="step-card"><div style="display:flex;align-items:center;gap:5px;"><div class="step-num">3</div><div class="agent-avatar av-commander" style="width:20px;height:20px;font-size:9px;">🎯</div></div><div class="step-text">协商生成方案</div><div class="step-agent">策略指挥官</div></div>
+            <div class="step-card"><div style="display:flex;align-items:center;gap:5px;"><div class="step-num">4</div><div class="agent-avatar av-commander" style="width:20px;height:20px;font-size:9px;">🎯</div></div><div class="step-text">总部确认发布</div><div class="step-agent">人+指挥官</div></div>
+            <div class="step-card"><div style="display:flex;align-items:center;gap:5px;"><div class="step-num">5</div><div class="agent-avatar av-stock" style="width:20px;height:20px;font-size:9px;">📦</div></div><div class="step-text">门店承接执行</div><div class="step-agent">库存预言家+门店</div></div>
+            <div class="step-card"><div style="display:flex;align-items:center;gap:5px;"><div class="step-num">6</div><div class="agent-avatar av-commander" style="width:20px;height:20px;font-size:9px;">🎯</div></div><div class="step-text">复盘&基因沉淀</div><div class="step-agent">指挥官→基因库</div></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ WEATHER AGENT ════════ -->
+      <div class="page" id="page-weather">
+        <div class="agent-hero agent-hero-weather">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;"><div class="agent-avatar agent-avatar-lg av-weather">🌦</div><div><h2>气象哨兵</h2><p>Weather Scout — 监测天气/季节变化，预测疾病关联</p></div></div>
+        </div>
+        <div class="collab-strip">
+          <span class="collab-strip-label">🤝 当前协作</span>
+          <div class="collab-strip-agents"><div class="agent-avatar av-weather">🌦</div><div class="agent-avatar av-commander">🎯</div></div>
+          <span class="collab-strip-arrow">→</span>
+          <span class="collab-strip-text">已向策略指挥官发出寒潮预警信号，等待协商响应</span>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="metric-card"><div class="metric-label">今日预警</div><div class="metric-value" style="color:var(--amber);">3</div><div class="metric-hint">寒潮、花粉、湿度异常</div></div>
+          <div class="metric-card"><div class="metric-label">覆盖城市</div><div class="metric-value">28</div><div class="metric-hint">华东区域</div></div>
+          <div class="metric-card"><div class="metric-label">预测准确率</div><div class="metric-value">91%</div><div class="metric-hint">近30天</div></div>
+          <div class="metric-card"><div class="metric-label">已触发协商</div><div class="metric-value">2</div><div class="metric-hint">寒潮+花粉</div></div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">⚠️</div><div><h2>当前预警详情</h2></div></div>
+          <div class="space-y-3 mt-4">
+            <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-weather" style="width:30px;height:30px;font-size:13px;">🌦</div><div class="signal-info"><div class="signal-title">寒潮预警：3天后降温12°C</div><div class="signal-detail">华东区域气温骤降，历史数据显示7天内抗过敏药需求增长47%</div><div class="signal-source">已发送至策略指挥官 · 10分钟前</div></div></div><span class="badge badge-red">已触发协商</span></div>
+            <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-weather" style="width:30px;height:30px;font-size:13px;">🌸</div><div class="signal-info"><div class="signal-title">花粉指数上升</div><div class="signal-detail">春季花粉浓度达4级，过敏性鼻炎用药需求预计增加35%</div><div class="signal-source">已发送至策略指挥官 · 1小时前</div></div></div><span class="badge badge-amber">待协商</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ CHRONIC AGENT ════════ -->
+      <div class="page" id="page-chronic">
+        <div class="agent-hero agent-hero-chronic">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;"><div class="agent-avatar agent-avatar-lg av-chronic">🫀</div><div><h2>慢病管家</h2><p>Chronic Keeper — 追踪慢病患者用药周期，自动匹配复购提醒</p></div></div>
+        </div>
+        <div class="collab-strip">
+          <span class="collab-strip-label">🤝 当前协作</span>
+          <div class="collab-strip-agents"><div class="agent-avatar av-commander">🎯</div><div class="agent-avatar av-chronic">🫀</div></div>
+          <span class="collab-strip-arrow">→</span>
+          <span class="collab-strip-text">响应策略指挥官协商请求，已返回8,624名复购到期会员+32,680名过敏易感人群</span>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="metric-card"><div class="metric-label">管理慢病会员</div><div class="metric-value">24,817</div><div class="metric-hint">高血压/糖尿病/哮喘</div></div>
+          <div class="metric-card"><div class="metric-label">复购窗口到期</div><div class="metric-value" style="color:var(--blue);">8,624</div><div class="metric-hint">25-35天周期</div></div>
+          <div class="metric-card"><div class="metric-label">过敏易感人群</div><div class="metric-value">32,680</div><div class="metric-hint">12个月内有过敏用药记录</div></div>
+          <div class="metric-card"><div class="metric-label">触达成功率</div><div class="metric-value">78%</div><div class="metric-hint">近30天</div></div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">📋</div><div><h2>复购到期会员 Top 5</h2></div></div>
+          <div class="space-y-3 mt-4">
+            <div class="signal-item"><div class="signal-left"><div style="width:30px;height:30px;border-radius:50%;background:var(--border-light);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">张</div><div class="signal-info"><div class="signal-title">张先生 · 高血压 · 57岁</div><div class="signal-detail">氨氯地平片 28天周期，第25天，预计3天后需复购</div><div class="signal-source">推荐关联：降压茶+心血管保健品</div></div></div><span class="badge badge-blue">待触达</span></div>
+            <div class="signal-item"><div class="signal-left"><div style="width:30px;height:30px;border-radius:50%;background:var(--border-light);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">李</div><div class="signal-info"><div class="signal-title">李女士 · 糖尿病 · 62岁</div><div class="signal-detail">二甲双胍 30天周期，第28天，预计2天后需复购</div><div class="signal-source">推荐关联：血糖仪试纸+无糖食品</div></div></div><span class="badge badge-blue">待触达</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ STOCK AGENT ════════ -->
+      <div class="page" id="page-stock">
+        <div class="agent-hero agent-hero-stock">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;"><div class="agent-avatar agent-avatar-lg av-stock">📦</div><div><h2>库存预言家</h2><p>Stock Prophet — 预测药品需求，建议补货，联动ERP</p></div></div>
+        </div>
+        <div class="collab-strip">
+          <span class="collab-strip-label">🤝 当前协作</span>
+          <div class="collab-strip-agents"><div class="agent-avatar av-weather">🌦</div><div class="agent-avatar av-stock">📦</div><div class="agent-avatar av-commander">🎯</div></div>
+          <span class="collab-strip-arrow">→</span>
+          <span class="collab-strip-text">收到气象哨兵寒潮信号，已向策略指挥官返回37家门店缺货数据</span>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="metric-card"><div class="metric-label">监控SKU</div><div class="metric-value">1,247</div><div class="metric-hint">50家门店</div></div>
+          <div class="metric-card"><div class="metric-label">低于安全库存</div><div class="metric-value" style="color:var(--red);">37</div><div class="metric-hint">家门店</div></div>
+          <div class="metric-card"><div class="metric-label">预测准确率</div><div class="metric-value">86%</div><div class="metric-hint">近30天</div></div>
+          <div class="metric-card"><div class="metric-label">补货建议待确认</div><div class="metric-value" style="color:var(--amber);">12</div><div class="metric-hint">项</div></div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">📊</div><div><h2>缺货预警 Top 5</h2></div></div>
+          <div class="space-y-3 mt-4">
+            <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-stock" style="width:30px;height:30px;font-size:13px;">📦</div><div class="signal-info"><div class="signal-title">氯雷他定片 · 37家门店低于安全库存</div><div class="signal-detail">当前平均库存2.3天用量，建议补货至14天安全线</div><div class="signal-source">关联信号：气象哨兵寒潮预警 → 需求预计增长47%</div></div></div><span class="badge badge-red">紧急</span></div>
+            <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-stock" style="width:30px;height:30px;font-size:13px;">📦</div><div class="signal-info"><div class="signal-title">鼻炎喷剂 · 22家门店低于安全库存</div><div class="signal-detail">当前平均库存3.1天用量，建议补货至14天安全线</div><div class="signal-source">关联信号：花粉指数上升 → 需求预计增长35%</div></div></div><span class="badge badge-amber">需确认</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ SENTIMENT AGENT ════════ -->
+      <div class="page" id="page-sentiment">
+        <div class="agent-hero agent-hero-sentiment">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;"><div class="agent-avatar agent-avatar-lg av-sentiment">📢</div><div><h2>舆情雷达</h2><p>Sentiment Radar — 监测公共卫生事件和社交媒体热点</p></div></div>
+        </div>
+        <div class="collab-strip">
+          <span class="collab-strip-label">🤝 当前协作</span>
+          <div class="collab-strip-agents"><div class="agent-avatar av-sentiment">📢</div></div>
+          <span class="collab-strip-arrow">→</span>
+          <span class="collab-strip-text">流感舆情持续升温，尚未达到协商触发阈值（200%周环比），继续监测中</span>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="metric-card"><div class="metric-label">监控关键词</div><div class="metric-value">156</div><div class="metric-hint">流感/腹泻/手足口…</div></div>
+          <div class="metric-card"><div class="metric-label">今日热点</div><div class="metric-value">3</div><div class="metric-hint">流感、腹泻、过敏</div></div>
+          <div class="metric-card"><div class="metric-label">流感讨论量</div><div class="metric-value" style="color:var(--red);">+180%</div><div class="metric-hint">周环比</div></div>
+          <div class="metric-card"><div class="metric-label">协商触发</div><div class="metric-value">0</div><div class="metric-hint">阈值200%</div></div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">🔥</div><div><h2>舆情热点</h2></div></div>
+          <div class="space-y-3 mt-4">
+            <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-sentiment" style="width:30px;height:30px;font-size:13px;">📢</div><div class="signal-info"><div class="signal-title">流感讨论量周环比上升180%</div><div class="signal-detail">微博/小红书/抖音流感相关话题热度持续上升，华东区域最集中</div><div class="signal-source">关联药品：奥司他韦、连花清瘟、板蓝根 · 继续监测</div></div></div><span class="badge badge-purple">监测中</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ COMMANDER (Swarm Room) ════════ -->
+      <div class="page" id="page-commander">
+        <div class="agent-hero agent-hero-commander">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;"><div class="agent-avatar agent-avatar-lg av-commander">🎯</div><div><h2>策略指挥官 · 协商室</h2><p>Strategy Commander — 汇总Agent信号，协商生成活动方案</p></div></div>
+        </div>
+        <div class="collab-strip">
+          <span class="collab-strip-label">🐝 蜂群协商</span>
+          <div class="collab-strip-agents"><div class="agent-avatar av-weather">🌦</div><div class="agent-avatar av-chronic">🫀</div><div class="agent-avatar av-stock">📦</div><div class="agent-avatar av-commander">🎯</div></div>
+          <span class="collab-strip-arrow">→</span>
+          <span class="collab-strip-text">4个Agent参与协商 · 耗时2.3s · 置信度94% · <span style="color:var(--green);font-weight:600;">已达成共识</span></span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div class="card"><div class="card-body" style="padding:0;">
+            <div class="swarm-room">
+              <div class="swarm-header">
+                <div><div class="swarm-header-title">🐝 蜂群协商室 — 春季过敏防护活动</div><div class="swarm-header-sub">4个Agent参与 · 协商耗时 2.3s · 置信度 94%</div></div>
+                <div style="display:flex;gap:5px;"><span class="badge badge-amber" style="font-size:10px;">实时</span><span class="badge badge-green" style="font-size:10px;">已达成共识</span></div>
+              </div>
+              <div class="negotiation-flow">
+                <div class="agent-avatar agent-avatar-sm av-weather" style="width:20px;height:20px;font-size:9px;">🌦</div><span>感知信号</span><span class="negotiation-arrow">→</span>
+                <div class="agent-avatar agent-avatar-sm av-chronic" style="width:20px;height:20px;font-size:9px;">🫀</div><span>匹配人群</span><span class="negotiation-arrow">→</span>
+                <div class="agent-avatar agent-avatar-sm av-stock" style="width:20px;height:20px;font-size:9px;">📦</div><span>确认库存</span><span class="negotiation-arrow">→</span>
+                <div class="agent-avatar agent-avatar-sm av-commander" style="width:20px;height:20px;font-size:9px;">🎯</div><span>生成方案</span><span class="negotiation-arrow">→</span>
+                <span style="font-weight:600;">👤 确认</span>
+              </div>
+              <div class="swarm-msg"><div class="agent-avatar av-weather" style="width:30px;height:30px;font-size:13px;">🌦</div><div class="swarm-msg-body"><div class="swarm-msg-header">气象哨兵 <span class="swarm-msg-tag tag-signal">📡 信号感知</span></div><p>⚠️ 检测到华东区域3天后降温12°C，花粉指数同步上升。历史数据显示，类似天气变化后7天内，抗过敏药需求平均增长 <b>47%</b>。</p><p style="margin-top:4px;">建议触发：春季过敏防护活动。</p></div></div>
+              <div class="swarm-msg"><div class="agent-avatar av-commander" style="width:30px;height:30px;font-size:13px;">🎯</div><div class="swarm-msg-body"><div class="swarm-msg-header">策略指挥官 <span class="swarm-msg-tag tag-negotiate">🔄 发起协商</span></div><p>收到气象哨兵预警。向慢病管家查询：哪些会员需要提前触达？向库存预言家查询：相关药品备货情况？</p></div></div>
+              <div class="swarm-msg"><div class="agent-avatar av-chronic" style="width:30px;height:30px;font-size:13px;">🫀</div><div class="swarm-msg-body"><div class="swarm-msg-header">慢病管家 <span class="swarm-msg-tag tag-negotiate">📋 人群匹配</span></div><p>识别到两类人群：<b>1,247名</b>心血管高危会员（降温易诱发）+ <b>32,680名</b>过敏易感人群（12个月内有过敏用药记录）。</p></div></div>
+              <div class="swarm-msg"><div class="agent-avatar av-stock" style="width:30px;height:30px;font-size:13px;">📦</div><div class="swarm-msg-body"><div class="swarm-msg-header">库存预言家 <span class="swarm-msg-tag tag-negotiate">📦 库存确认</span></div><p>氯雷他定37家门店低于安全库存，已生成补货工单。鼻炎喷剂22家门店需补货。建议：先补货再推活动。</p></div></div>
+              <div class="swarm-msg swarm-msg-right"><div class="agent-avatar av-commander" style="width:30px;height:30px;font-size:13px;">🎯</div><div class="swarm-msg-body"><div class="swarm-msg-header">策略指挥官 <span class="swarm-msg-tag tag-decision">✅ 方案生成</span></div><p>协商完成，生成方案：<b>春季过敏防护活动</b></p><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;"><div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px;font-size:11px;">覆盖会员：32,680</div><div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px;font-size:11px;">预计销售：¥48万</div><div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px;font-size:11px;">券包：满99减15</div><div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px;font-size:11px;">补货：37+22家门店</div></div></div></div>
+            </div>
+          </div></div>
+
+          <!-- Right: confirmation + store view -->
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="card"><div class="card-body">
+              <div class="section-title"><div class="section-icon">✅</div><div><h2>方案确认</h2><p>人工审核后一键发布</p></div></div>
+              <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--border-light);border-radius:var(--radius-md);font-size:12px;"><span>活动名称</span><b>春季过敏防护活动</b></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--border-light);border-radius:var(--radius-md);font-size:12px;"><span>覆盖会员</span><b>32,680</b></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--border-light);border-radius:var(--radius-md);font-size:12px;"><span>券包</span><b>满99减15</b></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--border-light);border-radius:var(--radius-md);font-size:12px;"><span>补货门店</span><b>59家</b></div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:12px;">
+                <button class="btn btn-primary" style="flex:1;justify-content:center;">✅ 确认发布</button>
+                <button class="btn btn-outline" style="flex:1;justify-content:center;">✏️ 微调方案</button>
+              </div>
+            </div></div>
+
+            <div class="card"><div class="card-body">
+              <div class="section-title"><div class="section-icon">🏪</div><div><h2>门店承接预览</h2><p>店长将看到的今日任务</p></div></div>
+              <div class="space-y-3 mt-4">
+                <div class="member-card"><div style="display:flex;align-items:center;justify-content:space-between;"><span class="member-name">张先生 · 高血压</span><span class="badge badge-blue">慢病管家</span></div><div class="member-action">氨氯地平片复购到期，降温提醒注意血压波动</div><div class="member-recommend">💡 推荐话术："张先生，降温了注意血压，您的降压药该续了，本周到店享8折"</div><div class="member-agent-tag">🫀 慢病管家建议 · 🌦️ 气象哨兵关联</div></div>
+                <div class="member-card"><div style="display:flex;align-items:center;justify-content:space-between;"><span class="member-name">王女士 · 过敏性鼻炎</span><span class="badge badge-amber">气象哨兵</span></div><div class="member-action">花粉指数上升，鼻炎可能复发，推荐氯雷他定</div><div class="member-recommend">💡 推荐话术："王女士，花粉季来了，提前备好鼻炎药，满99减15"</div><div class="member-agent-tag">🌦️ 气象哨兵建议 · 📦 库存已确认</div></div>
+              </div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════ DIGITAL TWIN ════════ -->
+      <div class="page" id="page-twin">
+        <div class="agent-hero agent-hero-twin">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;"><div class="agent-avatar agent-avatar-lg av-twin">🧬</div><div><h2>数字孪生 · 策略风洞</h2><p>Digital Twin — 在会员数字分身上仿真推演，先验证再执行</p></div></div>
+        </div>
+        <div class="collab-strip">
+          <span class="collab-strip-label">🧬 仿真模式</span>
+          <div class="collab-strip-agents"><div class="agent-avatar av-twin">🧬</div><div class="agent-avatar av-commander">🎯</div></div>
+          <span class="collab-strip-arrow">→</span>
+          <span class="strip-text">策略指挥官生成方案后，数字孪生自动启动仿真推演</span>
+        </div>
+        <div class="twin-grid">
+          <div class="twin-card">
+            <div class="twin-title">👤 会员数字分身 · 张先生</div>
+            <div class="twin-subtitle">57岁 · 高血压 · 氨氯地平片复购到期</div>
+            <div class="twin-timeline">
+              <div class="twin-event"><div class="twin-event-dot" style="background:var(--blue);"></div><div class="twin-event-content"><div class="twin-event-time">Day 0</div><div class="twin-event-text">氨氯地平片第25天，进入复购窗口</div></div></div>
+              <div class="twin-event"><div class="twin-event-dot" style="background:var(--amber);"></div><div class="twin-event-content"><div class="twin-event-time">Day 1（仿真）</div><div class="twin-event-text">收到降温提醒+复购优惠券 → 预计到店概率 72%</div></div></div>
+              <div class="twin-event"><div class="twin-event-dot" style="background:var(--green);"></div><div class="twin-event-content"><div class="twin-event-time">Day 3（仿真）</div><div class="twin-event-text">到店核销，关联购买降压茶 → 客单价提升 ¥38</div></div></div>
+            </div>
+          </div>
+          <div class="twin-card">
+            <div class="twin-title">📊 策略风洞 · 方案对比</div>
+            <div class="twin-subtitle">在孪生体上仿真推演三种方案</div>
+            <div class="twin-sim-bar">
+              <div class="twin-sim-item"><div class="twin-sim-label">方案A：仅推送</div><div class="twin-sim-track"><div class="twin-sim-fill" style="width:35%;background:var(--red);"></div></div><div class="twin-sim-value" style="color:var(--red);">35%</div></div>
+              <div class="twin-sim-item"><div class="twin-sim-label">方案B：推送+券</div><div class="twin-sim-track"><div class="twin-sim-fill" style="width:58%;background:var(--amber);"></div></div><div class="twin-sim-value" style="color:var(--amber);">58%</div></div>
+              <div class="twin-sim-item"><div class="twin-sim-label">方案C：蜂群方案</div><div class="twin-sim-track"><div class="twin-sim-fill" style="width:82%;background:var(--green);"></div></div><div class="twin-sim-value" style="color:var(--green);">82%</div></div>
+            </div>
+            <div style="margin-top:14px;padding:10px 12px;background:var(--border-light);border-radius:var(--radius-lg);font-size:11px;line-height:1.7;color:var(--text-secondary);">
+              <b style="color:var(--text-primary);">🧬 仿真结论：</b>蜂群方案（推送+券+天气关联话术+补货保障）预计转化率 <b style="color:var(--green);">82%</b>，较单一推送提升 <b>47pp</b>。建议采用方案C。
+            </div>
+          </div>
+        </div>
+
+        <!-- Gene Crystallization -->
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">🧬</div><div><h2>策略基因结晶</h2><p>成功策略自动沉淀为可复制的"基因"</p></div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px;">
+            <div class="gene-card"><div class="gene-title">🧬 寒潮防护基因</div><div class="gene-desc">触发：降温>10°C → 人群：心血管+过敏 → 券：满99减15</div><div class="gene-tags"><span class="gene-tag">已验证</span><span class="gene-tag">转化率82%</span><span class="gene-tag">可复制</span></div></div>
+            <div class="gene-card"><div class="gene-title">🧬 花粉季基因</div><div class="gene-desc">触发：花粉指数>4 → 人群：过敏性鼻炎 → 券：满59减10</div><div class="gene-tags"><span class="gene-tag">待验证</span><span class="gene-tag">预计转化76%</span></div></div>
+            <div class="gene-card"><div class="gene-title">🧬 慢病复购基因</div><div class="gene-desc">触发：用药周期到期 → 人群：慢病会员 → 券：复购8折</div><div class="gene-tags"><span class="gene-tag">已验证</span><span class="gene-tag">转化率78%</span><span class="gene-tag">可复制</span></div></div>
+          </div>
+        </div></div>
+      </div>
+
+    </div><!-- end content -->
+  </div><!-- end main -->
+</div><!-- end app -->
+
+<script src="script.js"></script>
+</body>
+</html>
