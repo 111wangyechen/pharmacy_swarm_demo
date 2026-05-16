@@ -1,0 +1,40 @@
+flowchart LR
+    subgraph A[业务触发]
+        A1[天气降温]
+        A2[慢病复购]
+        A3[舆情流感]
+        A4[沉睡会员]
+        A5[库存经营]
+    end
+
+    subgraph B[策略生成链路]
+        B1[信号感知 Agent]
+        B2[会员洞察 Agent]
+        B3[药品匹配 Agent]
+        B4[活动草案 Agent]
+        B5[库存预警 Agent]
+    end
+
+    subgraph C[落地与反馈]
+        C1[门店执行 Agent]
+        C2[复盘优化 Agent]
+        C3[策略模板库]
+    end
+
+    A1 --> B1
+    A2 --> B1
+    A3 --> B1
+    A4 --> B1
+    A5 --> B1
+
+    B1 --> B2
+    B2 --> B3
+    B3 --> B4
+    B4 --> B5
+    B5 --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 --> B4
+
+    B5 -.库存不足时反馈替代品.-> B3
+    C2 -.优化建议.-> B2
