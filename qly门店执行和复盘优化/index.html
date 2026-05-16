@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>数字副店长工作台 Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <main class="page">
+      <header class="hero">
+        <div>
+          <p>COURSE DEMO / DIGITAL ASSISTANT MANAGER</p>
+          <h1>医药零售门店“数字副店长工作台”</h1>
+          <span>门店执行 Agent × 复盘优化 Agent</span>
+        </div>
+        <aside class="hero-chip">
+          <strong>闭环链路</strong>
+          <span>感知 → 执行 → 复盘 → 优化</span>
+        </aside>
+      </header>
+
+      <section class="signal-strip">
+        <div><span>当前场景</span><strong>寒潮天气</strong></div>
+        <div><span>重点会员</span><strong>36 人</strong></div>
+        <div><span>活动状态</span><strong>可执行</strong></div>
+        <div><span>Demo 模式</span><strong>离线规则引擎</strong></div>
+      </section>
+
+      <section class="grid">
+        <article class="card input-card">
+          <div class="card-head">
+            <b>01</b>
+            <h2>场景输入</h2>
+          </div>
+          <label>活动名称<input id="campaignName" value="寒潮天气慢病会员健康提醒" /></label>
+          <label>天气信号<input id="weatherSignal" value="未来72小时降温10℃" /></label>
+          <label>重点会员数量<input id="priorityMembers" type="number" value="36" /></label>
+          <label>推荐品类<input id="categories" value="慢病续购品类,保暖护理用品" /></label>
+          <label>库存状态
+            <select id="inventoryStatus">
+              <option value="normal">库存充足</option>
+              <option value="low">库存偏低</option>
+            </select>
+          </label>
+          <button id="runExecution">运行门店执行 Agent</button>
+        </article>
+
+        <article class="card output-card">
+          <div class="card-head">
+            <b>02</b>
+            <h2>门店执行 Agent</h2>
+          </div>
+          <div id="executionOutput" class="output empty">等待运行</div>
+        </article>
+
+        <article class="card input-card">
+          <div class="card-head">
+            <b>03</b>
+            <h2>执行结果输入</h2>
+          </div>
+          <label>触达人数<input id="reachCount" type="number" value="1200" /></label>
+          <label>打开率<input id="openRate" type="number" step="0.01" value="0.38" /></label>
+          <label>领券率<input id="couponRate" type="number" step="0.01" value="0.21" /></label>
+          <label>核销率<input id="redemptionRate" type="number" step="0.01" value="0.13" /></label>
+          <label>销售额<input id="salesAmount" type="number" value="18600" /></label>
+          <label>复购提升<input id="repeatPurchaseLift" type="number" step="0.01" value="0.06" /></label>
+          <label>店长确认
+            <select id="managerConfirmed">
+              <option value="true">已确认</option>
+              <option value="false">未确认</option>
+            </select>
+          </label>
+          <label>店员触达率<input id="staffReachRate" type="number" step="0.01" value="0.92" /></label>
+          <label>是否缺货
+            <select id="stockout">
+              <option value="false">否</option>
+              <option value="true">是</option>
+            </select>
+          </label>
+          <button id="runReview">运行复盘优化 Agent</button>
+        </article>
+
+        <article class="card output-card">
+          <div class="card-head">
+            <b>04</b>
+            <h2>复盘优化 Agent</h2>
+          </div>
+          <div id="reviewOutput" class="output empty">等待运行</div>
+        </article>
+      </section>
+    </main>
+
+    <script src="src/agents.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>
