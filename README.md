@@ -43,6 +43,11 @@ pharmacy-swarm-demo/
 
 - HTML + CSS + 原生 JS，无 npm 依赖。
 
+## 开发与合并（PR）
+
+- 功能开发与演示迭代请在分支 **`feature/digital-deputy-workbench-mvp`** 上进行或由其发起 Pull Request 合并至 **`main`**。
+- 推送远端后，在 GitHub 选择 **base: `main`** ← **compare: `feature/digital-deputy-workbench-mvp`** 创建 PR。
+
 ## License
 
 MIT
