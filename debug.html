@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>蜂群智能 · Agent 调试台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="debug.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar sidebar-debug" id="sidebar">
+    <div class="sidebar-brand">
+      <h1>🔧 Agent 调试台</h1>
+      <p>多智能体系统监控</p>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">核心调度</div>
+      <button class="nav-item active" onclick="navigate('controller',this)">
+        <div class="nav-icon nav-icon-controller">🧠</div>
+        <span class="nav-label">主控 Agent</span>
+        <div class="nav-dot dot-active"></div>
+      </button>
+
+      <div class="nav-section-label">功能 Agent</div>
+      <button class="nav-item" onclick="navigate('signal',this)">
+        <div class="nav-icon nav-icon-signal">📡</div>
+        <span class="nav-label">信号感知</span>
+        <div class="nav-dot dot-alert"></div>
+      </button>
+      <button class="nav-item" onclick="navigate('insight',this)">
+        <div class="nav-icon nav-icon-insight">👥</div>
+        <span class="nav-label">会员洞察</span>
+        <div class="nav-dot dot-active"></div>
+      </button>
+      <button class="nav-item" onclick="navigate('drug',this)">
+        <div class="nav-icon nav-icon-drug">💊</div>
+        <span class="nav-label">药品匹配</span>
+        <div class="nav-dot dot-active"></div>
+      </button>
+      <button class="nav-item" onclick="navigate('strategy',this)">
+        <div class="nav-icon nav-icon-strategy">🎯</div>
+        <span class="nav-label">活动策略</span>
+        <div class="nav-dot dot-active"></div>
+      </button>
+      <button class="nav-item" onclick="navigate('exec',this)">
+        <div class="nav-icon nav-icon-exec">🏪</div>
+        <span class="nav-label">门店执行</span>
+        <div class="nav-dot dot-idle"></div>
+      </button>
+      <button class="nav-item" onclick="navigate('review-agent',this)">
+        <div class="nav-icon nav-icon-review-agent">📊</div>
+        <span class="nav-label">复盘优化</span>
+        <div class="nav-dot dot-idle"></div>
+      </button>
+      <button class="nav-item" onclick="navigate('inventory',this)">
+        <div class="nav-icon nav-icon-inventory">📦</div>
+        <span class="nav-label">库存履约</span>
+        <div class="nav-dot dot-alert"></div>
+      </button>
+
+      <div class="nav-section-label">系统监控</div>
+      <button class="nav-item" onclick="navigate('topology',this)">
+        <div class="nav-icon nav-icon-topology">🔄</div>
+        <span class="nav-label">协作拓扑</span>
+      </button>
+      <button class="nav-item" onclick="navigate('logs',this)">
+        <div class="nav-icon nav-icon-logs">📋</div>
+        <span class="nav-label">运行日志</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-row">
+        <span>7/7 Agent 在线</span>
+        <span class="dot-active" style="width:6px;height:6px;border-radius:50%;display:inline-block;"></span>
+      </div>
+      <a href="index.html" class="sidebar-debug-link">← 返回用户侧</a>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn-outline" style="display:none;padding:6px 10px;font-size:16px;border:none;background:none;cursor:pointer;" onclick="document.getElementById('sidebar').classList.toggle('open')" id="menuBtn">☰</button>
+        <span class="topbar-title" id="topbarTitle">主控 Agent</span>
+        <span class="topbar-breadcrumb" id="topbarBread">核心调度</span>
+      </div>
+      <div class="topbar-right">
+        <span class="badge badge-green" style="font-size:10px;">● 系统正常</span>
+        <span class="badge" style="background:#dcfce7;color:#15803d;font-size:10px;">延迟 23ms</span>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- ════════ CONTROLLER AGENT ════════ -->
+      <div class="page active" id="page-controller">
+        <div class="agent-hero agent-hero-controller">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">
+            <div class="agent-avatar agent-avatar-lg av-controller">🧠</div>
+            <div>
+              <h2>主控 Agent</h2>
+              <p>Master Controller — 统一调度 / 汇总解释 / 推动流转</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-grid" style="grid-template-columns:repeat(5,1fr);">
+          <div class="metric-card"><div class="metric-label">调度次数</div><div class="metric-value">1,247</div><div class="metric-hint">今日</div></div>
+          <div class="metric-card"><div class="metric-label">活跃协商</div><div class="metric-value" style="color:var(--green);">3</div><div class="metric-hint">进行中</div></div>
+          <div class="metric-card"><div class="metric-label">平均协商耗时</div><div class="metric-value">2.3s</div><div class="metric-hint">近1小时</div></div>
+          <div class="metric-card"><div class="metric-label">置信度</div><div class="metric-value" style="color:var(--green);">94%</div><div class="metric-hint">最近一次协商</div></div>
+          <div class="metric-card"><div class="metric-label">异常Agent</div><div class="metric-value" style="color:var(--green);">0</div><div class="metric-hint">全部正常</div></div>
+        </div>
+
+        <!-- Agent Status Grid -->
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title">
+            <div class="section-icon">📡</div>
+            <div><h2>功能 Agent 状态</h2><p>主控Agent统一监控所有功能Agent运行状态</p></div>
+          </div>
+          <div class="agent-status-grid mt-4">
+            <div class="agent-status-card">
+              <div class="agent-status-header">
+                <div class="agent-avatar av-signal">📡</div>
+                <div class="agent-status-name">信号感知</div>
+                <div class="nav-dot dot-alert"></div>
+              </div>
+              <div class="agent-status-metrics">
+                <div><span class="agent-metric-label">状态</span><span class="agent-metric-value" style="color:var(--amber);">告警</span></div>
+                <div><span class="agent-metric-label">今日信号</span><span class="agent-metric-value">12</span></div>
+                <div><span class="agent-metric-label">延迟</span><span class="agent-metric-value">15ms</span></div>
+              </div>
+              <div class="agent-status-detail">寒潮预警+花粉指数上升，已触发2次协商</div>
+            </div>
+            <div class="agent-status-card">
+              <div class="agent-status-header">
+                <div class="agent-avatar av-insight">👥</div>
+                <div class="agent-status-name">会员洞察</div>
+                <div class="nav-dot dot-active"></div>
+              </div>
+              <div class="agent-status-metrics">
+                <div><span class="agent-metric-label">状态</span><span class="agent-metric-value" style="color:var(--green);">运行中</span></div>
+                <div><span class="agent-metric-label">管理标签</span><span class="agent-metric-value">156个</span></div>
+                <div><span class="agent-metric-label">延迟</span><span class="agent-metric-value">8ms</span></div>
+              </div>
+              <div class="agent-status-detail">已返回8,624名复购到期+32,680名过敏易感人群</div>
+            </div>
+            <div class="agent-status-card">
+              <div class="agent-status-header">
+                <div class="agent-avatar av-drug">💊</div>
+                <div class="agent-status-name">药品匹配</div>
+                <div class="nav-dot dot-active"></div>
+              </div>
+              <div class="agent-status-metrics">
+                <div><span class="agent-metric-label">状态</span><span class="agent-metric-value" style="color:var(--green);">运行中</span></div>
+                <div><span class="agent-metric-label">匹配规则</span><span class="agent-metric-value">89条</span></div>
+                <div><span class="agent-metric-label">延迟</span><span class="agent-metric-value">5ms</span></div>
+              </div>
+              <div class="agent-status-detail">已生成关联推荐：降压茶+心血管保健品等</div>
+            </div>
+            <div class="agent-status-card">
+              <div class="agent-status-header">
+                <div class="agent-avatar av-strategy">🎯</div>
+                <div class="agent-status-name">活动策略</div>
+                <div class="nav-dot dot-active"></div>
+              </div>
+              <div class="agent-status-metrics">
+                <div><span class="agent-metric-label">状态</span><span class="agent-metric-value" style="color:var(--green);">运行中</span></div>
+                <div><span class="agent-metric-label">方案生成</span><span class="agent-metric-value">3个</span></div>
+                <div><span class="agent-metric-label">延迟</span><span class="agent-metric-value">12ms</span></div>
+              </div>
+              <div class="agent-status-detail">已生成春季过敏防护活动方案，置信度94%</div>
+            </div>
+            <div class="agent-status-card">
+              <div class="agent-status-header">
+                <div class="agent-avatar av-exec">🏪</div>
+                <div class="agent-status-name">门店执行</div>
+                <div class="nav-dot dot-idle"></div>
+              </div>
+              <div class="agent-status-metrics">
+                <div><span class="agent-metric-label">状态</span><span class="agent-metric-value">空闲</span></div>
+                <div><span class="agent-metric-label">待拆任务</span><span class="agent-metric-value">0</span></div>
+                <div><span class="agent-metric-label">延迟</span><span class="agent-metric-value">3ms</span></div>
+              </div>
+              <div class="agent-status-detail">等待活动确认后自动拆解门店任务</div>
+            </div>
+            <div class="agent-status-card">
+              <div class="agent-status-header">
+                <div class="agent-avatar av-review-agent">📊</div>
+                <div class="agent-status-name">复盘优化</div>
+                <div class="nav-dot dot-idle"></div>
+              </div>
+              <div class="agent-status-metrics">
+                <div><span class="agent-metric-label">状态</span><span class="agent-metric-value">空闲</span></div>
+                <div><span class="agent-metric-label">沉淀模板</span><span class="agent-metric-value">8个</span></div>
+                <div><span class="agent-metric-label">延迟</span><span class="agent-metric-value">6ms</span></div>
+              </div>
+              <div class="agent-status-detail">等待活动结束后自动启动复盘</div>
+            </div>
+            <div class="agent-status-card">
+              <div class="agent-status-header">
+                <div class="agent-avatar av-inventory">📦</div>
+                <div class="agent-status-name">库存履约</div>
+                <div class="nav-dot dot-alert"></div>
+              </div>
+              <div class="agent-status-metrics">
+                <div><span class="agent-metric-label">状态</span><span class="agent-metric-value" style="color:var(--amber);">告警</span></div>
+                <div><span class="agent-metric-label">监控SKU</span><span class="agent-metric-value">1,247</span></div>
+                <div><span class="agent-metric-label">延迟</span><span class="agent-metric-value">18ms</span></div>
+              </div>
+              <div class="agent-status-detail">37+22家门店低于安全库存，已生成补货工单</div>
+            </div>
+          </div>
+        </div></div>
+
+        <!-- Negotiation Log -->
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title">
+            <div class="section-icon">🔄</div>
+            <div><h2>最近协商记录</h2><p>主控Agent调度的多Agent协商过程</p></div>
+          </div>
+          <div class="swarm-room mt-4">
+            <div class="swarm-header">
+              <div><div class="swarm-header-title">🐝 蜂群协商室 — 春季过敏防护活动</div><div class="swarm-header-sub">5个Agent参与 · 协商耗时 2.3s · 置信度 94%</div></div>
+              <div style="display:flex;gap:5px;"><span class="badge badge-amber" style="font-size:10px;">实时</span><span class="badge badge-green" style="font-size:10px;">已达成共识</span></div>
+            </div>
+            <div class="negotiation-flow">
+              <div class="agent-avatar agent-avatar-sm av-signal" style="width:20px;height:20px;font-size:9px;">📡</div><span>感知信号</span><span class="negotiation-arrow">→</span>
+              <div class="agent-avatar agent-avatar-sm av-insight" style="width:20px;height:20px;font-size:9px;">👥</div><span>匹配人群</span><span class="negotiation-arrow">→</span>
+              <div class="agent-avatar agent-avatar-sm av-inventory" style="width:20px;height:20px;font-size:9px;">📦</div><span>确认库存</span><span class="negotiation-arrow">→</span>
+              <div class="agent-avatar agent-avatar-sm av-drug" style="width:20px;height:20px;font-size:9px;">💊</div><span>匹配药品</span><span class="negotiation-arrow">→</span>
+              <div class="agent-avatar agent-avatar-sm av-strategy" style="width:20px;height:20px;font-size:9px;">🎯</div><span>生成方案</span><span class="negotiation-arrow">→</span>
+              <span style="font-weight:600;">👤 确认</span>
+            </div>
+            <div class="swarm-msg"><div class="agent-avatar av-signal" style="width:30px;height:30px;font-size:13px;">📡</div><div class="swarm-msg-body"><div class="swarm-msg-header">信号感知Agent <span class="swarm-msg-tag tag-signal">📡 信号感知</span></div><p>⚠️ 检测到华东区域3天后降温12°C，花粉指数同步上升。历史数据显示，类似天气变化后7天内，抗过敏药需求平均增长 <b>47%</b>。</p><p style="margin-top:4px;">建议触发：春季过敏防护活动。</p></div></div>
+            <div class="swarm-msg"><div class="agent-avatar av-controller" style="width:30px;height:30px;font-size:13px;">🧠</div><div class="swarm-msg-body"><div class="swarm-msg-header">主控Agent <span class="swarm-msg-tag tag-negotiate">🔄 发起协商</span></div><p>收到信号感知预警。调度会员洞察查询目标人群，调度库存履约确认备货情况，调度药品匹配生成关联推荐。</p></div></div>
+            <div class="swarm-msg"><div class="agent-avatar av-insight" style="width:30px;height:30px;font-size:13px;">👥</div><div class="swarm-msg-body"><div class="swarm-msg-header">会员洞察Agent <span class="swarm-msg-tag tag-negotiate">📋 人群匹配</span></div><p>识别到两类人群：<b>1,247名</b>心血管高危会员（降温易诱发）+ <b>32,680名</b>过敏易感人群（12个月内有过敏用药记录）。</p></div></div>
+            <div class="swarm-msg"><div class="agent-avatar av-inventory" style="width:30px;height:30px;font-size:13px;">📦</div><div class="swarm-msg-body"><div class="swarm-msg-header">库存履约Agent <span class="swarm-msg-tag tag-negotiate">📦 库存确认</span></div><p>氯雷他定37家门店低于安全库存，已生成补货工单。鼻炎喷剂22家门店需补货。建议：先补货再推活动。</p></div></div>
+            <div class="swarm-msg"><div class="agent-avatar av-drug" style="width:30px;height:30px;font-size:13px;">💊</div><div class="swarm-msg-body"><div class="swarm-msg-header">药品匹配Agent <span class="swarm-msg-tag tag-negotiate">💊 关联推荐</span></div><p>慢病人群关联：降压茶+心血管保健品。过敏人群关联：氯雷他定+鼻炎喷剂+维生素C。合规检查通过。</p></div></div>
+            <div class="swarm-msg swarm-msg-right"><div class="agent-avatar av-strategy" style="width:30px;height:30px;font-size:13px;">🎯</div><div class="swarm-msg-body"><div class="swarm-msg-header">活动策略Agent <span class="swarm-msg-tag tag-decision">✅ 方案生成</span></div><p>协商完成，生成方案：<b>春季过敏防护活动</b></p><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;"><div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px;font-size:11px;">覆盖会员：32,680</div><div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px;font-size:11px;">预计销售：¥48万</div><div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px;font-size:11px;">券包：满99减15</div><div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px;font-size:11px;">补货：37+22家门店</div></div></div></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ SIGNAL AGENT ════════ -->
+      <div class="page" id="page-signal">
+        <div class="agent-hero agent-hero-signal">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">
+            <div class="agent-avatar agent-avatar-lg av-signal">📡</div>
+            <div><h2>信号感知 Agent</h2><p>Signal Perception — 天气 / 季节 / 舆情 / 疾病热点</p></div>
+          </div>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="metric-card"><div class="metric-label">今日预警</div><div class="metric-value" style="color:var(--amber);">3</div><div class="metric-hint">寒潮、花粉、湿度异常</div></div>
+          <div class="metric-card"><div class="metric-label">覆盖城市</div><div class="metric-value">28</div><div class="metric-hint">华东区域</div></div>
+          <div class="metric-card"><div class="metric-label">预测准确率</div><div class="metric-value">91%</div><div class="metric-hint">近30天</div></div>
+          <div class="metric-card"><div class="metric-label">已触发协商</div><div class="metric-value">2</div><div class="metric-hint">寒潮+花粉</div></div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">⚠️</div><div><h2>当前预警详情</h2></div></div>
+          <div class="space-y-3 mt-4">
+            <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-signal" style="width:30px;height:30px;font-size:13px;">🌦</div><div class="signal-info"><div class="signal-title">寒潮预警：3天后降温12°C</div><div class="signal-detail">华东区域气温骤降，历史数据显示7天内抗过敏药需求增长47%</div><div class="signal-source">已发送至主控Agent · 10分钟前</div></div></div><span class="badge badge-red">已触发协商</span></div>
+            <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-signal" style="width:30px;height:30px;font-size:13px;">🌸</div><div class="signal-info"><div class="signal-title">花粉指数上升</div><div class="signal-detail">春季花粉浓度达4级，过敏性鼻炎用药需求预计增加35%</div><div class="signal-source">已发送至主控Agent · 1小时前</div></div></div><span class="badge badge-amber">待协商</span></div>
+            <div class="signal-item"><div class="signal-left"><div class="agent-avatar av-signal" style="width:30px;height:30px;font-size:13px;">📢</div><div class="signal-info"><div class="signal-title">流感舆情升温</div><div class="signal-detail">社交媒体流感讨论量周环比上升180%</div><div class="signal-source">继续监测 · 阈值200%</div></div></div><span class="badge badge-purple">监测中</span></div>
+          </div>
+        </div></div>
+        <!-- Debug Config -->
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">⚙️</div><div><h2>调试配置</h2><p>信号感知Agent运行参数</p></div></div>
+          <div class="debug-config mt-4">
+            <div class="config-row"><span class="config-label">数据源</span><span class="config-value">和风天气API + 微博/小红书爬虫 + 疾控中心数据</span></div>
+            <div class="config-row"><span class="config-label">刷新频率</span><span class="config-value">每15分钟</span></div>
+            <div class="config-row"><span class="config-label">协商触发阈值</span><span class="config-value">降温>8°C / 花粉指数>3 / 舆情周环比>200%</span></div>
+            <div class="config-row"><span class="config-label">模型版本</span><span class="config-value">signal-v2.3 (2026-05-10)</span></div>
+            <div class="config-row"><span class="config-label">最近一次推理</span><span class="config-value">2026-05-16 09:45:12 · 耗时 1.2s · tokens: 1,847</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ INSIGHT AGENT ════════ -->
+      <div class="page" id="page-insight">
+        <div class="agent-hero agent-hero-insight">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">
+            <div class="agent-avatar agent-avatar-lg av-insight">👥</div>
+            <div><h2>会员洞察 Agent</h2><p>Member Insight — 会员标签 / 用药周期 / 人群筛选</p></div>
+          </div>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="metric-card"><div class="metric-label">管理慢病会员</div><div class="metric-value">24,817</div><div class="metric-hint">高血压/糖尿病/哮喘</div></div>
+          <div class="metric-card"><div class="metric-label">复购窗口到期</div><div class="metric-value" style="color:var(--blue);">8,624</div><div class="metric-hint">25-35天周期</div></div>
+          <div class="metric-card"><div class="metric-label">过敏易感人群</div><div class="metric-value">32,680</div><div class="metric-hint">12个月内有过敏用药记录</div></div>
+          <div class="metric-card"><div class="metric-label">触达成功率</div><div class="metric-value">78%</div><div class="metric-hint">近30天</div></div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">⚙️</div><div><h2>调试配置</h2></div></div>
+          <div class="debug-config mt-4">
+            <div class="config-row"><span class="config-label">数据源</span><span class="config-value">CRM会员库 + ERP购药记录 + 标签体系(156个)</span></div>
+            <div class="config-row"><span class="config-label">复购周期算法</span><span class="config-value">基于用药类型自动计算（慢性病25-35天，季节性7-14天）</span></div>
+            <div class="config-row"><span class="config-label">人群筛选延迟</span><span class="config-value">平均 8ms（10万人内）</span></div>
+            <div class="config-row"><span class="config-label">模型版本</span><span class="config-value">insight-v3.1 (2026-05-08)</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ DRUG AGENT ════════ -->
+      <div class="page" id="page-drug">
+        <div class="agent-hero agent-hero-drug">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">
+            <div class="agent-avatar agent-avatar-lg av-drug">💊</div>
+            <div><h2>药品匹配 Agent</h2><p>Drug Matching — 关联品类推荐 / 合规提醒</p></div>
+          </div>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="metric-card"><div class="metric-label">匹配规则</div><div class="metric-value">89</div><div class="metric-hint">条</div></div>
+          <div class="metric-card"><div class="metric-label">今日推荐</div><div class="metric-value">347</div><div class="metric-hint">次</div></div>
+          <div class="metric-card"><div class="metric-label">合规拦截</div><div class="metric-value" style="color:var(--red);">3</div><div class="metric-hint">处方药违规推荐</div></div>
+          <div class="metric-card"><div class="metric-label">关联购买率</div><div class="metric-value" style="color:var(--green);">23%</div><div class="metric-hint">近30天</div></div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">⚙️</div><div><h2>调试配置</h2></div></div>
+          <div class="debug-config mt-4">
+            <div class="config-row"><span class="config-label">数据源</span><span class="config-value">药品知识库 + 合规规则引擎 + 关联购买历史</span></div>
+            <div class="config-row"><span class="config-label">合规规则</span><span class="config-value">处方药不主动推荐、保健品不替代药品、禁忌交叉检查</span></div>
+            <div class="config-row"><span class="config-label">模型版本</span><span class="config-value">drug-v2.0 (2026-05-05)</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ STRATEGY AGENT ════════ -->
+      <div class="page" id="page-strategy">
+        <div class="agent-hero agent-hero-strategy">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">
+            <div class="agent-avatar agent-avatar-lg av-strategy">🎯</div>
+            <div><h2>活动策略 Agent</h2><p>Campaign Strategy — 活动方案 / 券包 / 渠道 / 时间</p></div>
+          </div>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="metric-card"><div class="metric-label">今日生成方案</div><div class="metric-value">3</div><div class="metric-hint">个</div></div>
+          <div class="metric-card"><div class="metric-label">平均置信度</div><div class="metric-value" style="color:var(--green);">91%</div><div class="metric-hint">近7天</div></div>
+          <div class="metric-card"><div class="metric-label">券包模板</div><div class="metric-value">24</div><div class="metric-hint">个可用模板</div></div>
+          <div class="metric-card"><div class="metric-label">渠道覆盖</div><div class="metric-value">5</div><div class="metric-hint">短信/微信/APP/门店/电话</div></div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">⚙️</div><div><h2>调试配置</h2></div></div>
+          <div class="debug-config mt-4">
+            <div class="config-row"><span class="config-label">数据源</span><span class="config-value">历史活动库 + 策略基因库 + 渠道效果数据</span></div>
+            <div class="config-row"><span class="config-label">方案生成策略</span><span class="config-value">基于策略基因匹配 + 数字孪生仿真验证 + 人工确认</span></div>
+            <div class="config-row"><span class="config-label">模型版本</span><span class="config-value">strategy-v4.2 (2026-05-12)</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ EXEC AGENT ════════ -->
+      <div class="page" id="page-exec">
+        <div class="agent-hero agent-hero-exec">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">
+            <div class="agent-avatar agent-avatar-lg av-exec">🏪</div>
+            <div><h2>门店执行 Agent</h2><p>Store Execution — 任务拆解 / 店长任务 / 店员话术</p></div>
+          </div>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="metric-card"><div class="metric-label">待拆解任务</div><div class="metric-value">0</div><div class="metric-hint">等待活动确认</div></div>
+          <div class="metric-card"><div class="metric-label">今日执行任务</div><div class="metric-value">8</div><div class="metric-hint">项</div></div>
+          <div class="metric-card"><div class="metric-label">话术生成</div><div class="metric-value">12</div><div class="metric-hint">条</div></div>
+          <div class="metric-card"><div class="metric-label">执行率</div><div class="metric-value" style="color:var(--green);">68%</div><div class="metric-hint">近7天</div></div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">⚙️</div><div><h2>调试配置</h2></div></div>
+          <div class="debug-config mt-4">
+            <div class="config-row"><span class="config-label">数据源</span><span class="config-value">门店组织架构 + 岗位职责 + 历史执行数据</span></div>
+            <div class="config-row"><span class="config-label">话术模板</span><span class="config-value">基于会员画像+活动内容+门店场景动态生成</span></div>
+            <div class="config-row"><span class="config-label">模型版本</span><span class="config-value">exec-v2.5 (2026-05-09)</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ REVIEW AGENT ════════ -->
+      <div class="page" id="page-review-agent">
+        <div class="agent-hero agent-hero-review-agent">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">
+            <div class="agent-avatar agent-avatar-lg av-review-agent">📊</div>
+            <div><h2>复盘优化 Agent</h2><p>Review & Optimize — 效果分析 / 优化建议 / 模板沉淀</p></div>
+          </div>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="metric-card"><div class="metric-label">已复盘活动</div><div class="metric-value">12</div><div class="metric-hint">本季度</div></div>
+          <div class="metric-card"><div class="metric-label">沉淀模板</div><div class="metric-value">8</div><div class="metric-hint">个策略基因</div></div>
+          <div class="metric-card"><div class="metric-label">优化建议</div><div class="metric-value">5</div><div class="metric-hint">项待采纳</div></div>
+          <div class="metric-card"><div class="metric-label">复盘准确率</div><div class="metric-value" style="color:var(--green);">89%</div><div class="metric-hint">与人工复盘对比</div></div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">⚙️</div><div><h2>调试配置</h2></div></div>
+          <div class="debug-config mt-4">
+            <div class="config-row"><span class="config-label">数据源</span><span class="config-value">活动执行数据 + 销售数据 + 会员反馈 + 门店执行率</span></div>
+            <div class="config-row"><span class="config-label">模板沉淀规则</span><span class="config-value">转化率>25% 且 执行率>70% 自动沉淀为策略基因</span></div>
+            <div class="config-row"><span class="config-label">模型版本</span><span class="config-value">review-v3.0 (2026-05-11)</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ INVENTORY AGENT ════════ -->
+      <div class="page" id="page-inventory">
+        <div class="agent-hero agent-hero-inventory">
+          <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">
+            <div class="agent-avatar agent-avatar-lg av-inventory">📦</div>
+            <div><h2>库存履约 Agent</h2><p>Inventory & Fulfillment — 库存风险 / 补货建议 / 履约判断</p></div>
+          </div>
+        </div>
+        <div class="metrics-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="metric-card"><div class="metric-label">监控SKU</div><div class="metric-value">1,247</div><div class="metric-hint">50家门店</div></div>
+          <div class="metric-card"><div class="metric-label">低于安全库存</div><div class="metric-value" style="color:var(--red);">37</div><div class="metric-hint">家门店</div></div>
+          <div class="metric-card"><div class="metric-label">预测准确率</div><div class="metric-value">86%</div><div class="metric-hint">近30天</div></div>
+          <div class="metric-card"><div class="metric-label">补货建议待确认</div><div class="metric-value" style="color:var(--amber);">12</div><div class="metric-hint">项</div></div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="section-title"><div class="section-icon">⚙️</div><div><h2>调试配置</h2></div></div>
+          <div class="debug-config mt-4">
+            <div class="config-row"><span class="config-label">数据源</span><span class="config-value">ERP库存系统 + 销售流水 + 供应商交期数据</span></div>
+            <div class="config-row"><span class="config-label">安全库存算法</span><span class="config-value">基于历史销量+季节因子+活动计划动态计算</span></div>
+            <div class="config-row"><span class="config-label">补货触发</span><span class="config-value">库存<7天用量 或 活动需求预测>当前库存</span></div>
+            <div class="config-row"><span class="config-label">模型版本</span><span class="config-value">inventory-v2.8 (2026-05-07)</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ TOPOLOGY ════════ -->
+      <div class="page" id="page-topology">
+        <div class="page-hero" style="background:linear-gradient(135deg,#065f46,#059669,#34d399);">
+          <div style="position:relative;z-index:1;">
+            <h2 style="font-size:20px;font-weight:700;color:#fff;">协作拓扑</h2>
+            <p style="font-size:12.5px;color:rgba(255,255,255,.7);margin-top:4px;">多Agent协同关系可视化</p>
+          </div>
+        </div>
+        <div class="card mt-4"><div class="card-body">
+          <div class="topology-container">
+            <div class="topology-center">
+              <div class="topology-main-node">
+                <div class="topology-main-icon">🧠</div>
+                <div class="topology-main-label">主控Agent</div>
+                <div class="topology-main-sub">统一调度/汇总解释/推动流转</div>
+              </div>
+            </div>
+            <div class="topology-nodes">
+              <div class="topology-node topology-node-active">
+                <div class="topology-node-icon">📡</div>
+                <div class="topology-node-label">信号感知</div>
+                <div class="topology-node-status dot-alert"></div>
+              </div>
+              <div class="topology-node topology-node-active">
+                <div class="topology-node-icon">👥</div>
+                <div class="topology-node-label">会员洞察</div>
+                <div class="topology-node-status dot-active"></div>
+              </div>
+              <div class="topology-node topology-node-active">
+                <div class="topology-node-icon">💊</div>
+                <div class="topology-node-label">药品匹配</div>
+                <div class="topology-node-status dot-active"></div>
+              </div>
+              <div class="topology-node topology-node-active">
+                <div class="topology-node-icon">🎯</div>
+                <div class="topology-node-label">活动策略</div>
+                <div class="topology-node-status dot-active"></div>
+              </div>
+              <div class="topology-node">
+                <div class="topology-node-icon">🏪</div>
+                <div class="topology-node-label">门店执行</div>
+                <div class="topology-node-status dot-idle"></div>
+              </div>
+              <div class="topology-node">
+                <div class="topology-node-icon">📊</div>
+                <div class="topology-node-label">复盘优化</div>
+                <div class="topology-node-status dot-idle"></div>
+              </div>
+              <div class="topology-node topology-node-active">
+                <div class="topology-node-icon">📦</div>
+                <div class="topology-node-label">库存履约</div>
+                <div class="topology-node-status dot-alert"></div>
+              </div>
+            </div>
+            <div class="topology-connections">
+              <svg width="100%" height="100%" style="position:absolute;top:0;left:0;pointer-events:none;">
+                <defs>
+                  <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#059669" />
+                  </marker>
+                </defs>
+              </svg>
+            </div>
+          </div>
+          <div style="margin-top:16px;padding:12px 16px;background:var(--border-light);border-radius:var(--radius-lg);font-size:12px;color:var(--text-secondary);line-height:1.7;">
+            <b style="color:var(--text-primary);">拓扑说明：</b>主控Agent为中心调度节点，所有功能Agent通过主控Agent进行协商。信号感知Agent可主动触发协商流程，其他Agent响应主控调度。绿色连线表示当前活跃的协作关系，灰色表示空闲。
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ════════ LOGS ════════ -->
+      <div class="page" id="page-logs">
+        <div class="page-hero" style="background:linear-gradient(135deg,#1e293b,#334155,#64748b);">
+          <div style="position:relative;z-index:1;">
+            <h2 style="font-size:20px;font-weight:700;color:#fff;">运行日志</h2>
+            <p style="font-size:12.5px;color:rgba(255,255,255,.7);margin-top:4px;">多Agent系统运行时日志</p>
+          </div>
+        </div>
+        <div class="card mt-4"><div class="card-body" style="padding:0;">
+          <div class="log-container">
+            <div class="log-entry log-info"><span class="log-time">09:45:12</span><span class="log-agent">[信号感知]</span><span class="log-msg">检测到华东区域降温预警，温差12°C，触发协商</span></div>
+            <div class="log-entry log-info"><span class="log-time">09:45:12</span><span class="log-agent">[主控]</span><span class="log-msg">收到信号感知预警，发起协商 #1247</span></div>
+            <div class="log-entry log-info"><span class="log-time">09:45:13</span><span class="log-agent">[会员洞察]</span><span class="log-msg">响应协商，返回8,624名复购到期+32,680名过敏易感人群</span></div>
+            <div class="log-entry log-warn"><span class="log-time">09:45:13</span><span class="log-agent">[库存履约]</span><span class="log-msg">⚠️ 氯雷他定37家门店低于安全库存，已生成补货工单</span></div>
+            <div class="log-entry log-info"><span class="log-time">09:45:14</span><span class="log-agent">[药品匹配]</span><span class="log-msg">生成关联推荐：降压茶+心血管保健品 / 氯雷他定+鼻炎喷剂</span></div>
+            <div class="log-entry log-success"><span class="log-time">09:45:14</span><span class="log-agent">[活动策略]</span><span class="log-msg">✅ 协商完成，生成方案：春季过敏防护活动，置信度94%</span></div>
+            <div class="log-entry log-info"><span class="log-time">09:45:14</span><span class="log-agent">[主控]</span><span class="log-msg">协商 #1247 结束，耗时2.3s，等待人工确认</span></div>
+            <div class="log-entry log-info"><span class="log-time">09:30:00</span><span class="log-agent">[系统]</span><span class="log-msg">所有Agent健康检查通过，7/7在线</span></div>
+            <div class="log-entry log-warn"><span class="log-time">09:15:22</span><span class="log-agent">[库存履约]</span><span class="log-msg">⚠️ 鼻炎喷剂22家门店低于安全库存</span></div>
+            <div class="log-entry log-info"><span class="log-time">09:00:00</span><span class="log-agent">[系统]</span><span class="log-msg">每日定时任务启动：标签更新、周期计算、库存扫描</span></div>
+          </div>
+        </div></div>
+      </div>
+
+    </div><!-- end content -->
+  </div><!-- end main -->
+</div><!-- end app -->
+
+<script src="debug.js"></script>
+</body>
+</html>
