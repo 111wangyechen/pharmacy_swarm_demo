@@ -1,0 +1,10 @@
+{
+  "name": "digital-store-manager-agents",
+  "version": "1.0.0",
+  "private": true,
+  "description": "医药零售门店数字副店长双 Agent 演示项目",
+  "scripts": {
+    "test": "node tests/agents.test.js",
+    "start": "npx serve ."
+  }
+}
