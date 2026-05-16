@@ -1,0 +1,1361 @@
+/* 数字副店长工作台 Demo — 对齐 docs/DESIGN-SPEC-B-WORKBENCH.md */
+
+:root {
+  --wb-sidebar-bg: #101828;
+  --wb-sidebar-icon: rgba(255, 255, 255, 0.65);
+  --wb-sidebar-active: #ffffff;
+  --wb-sidebar-hover: rgba(255, 255, 255, 0.08);
+  --wb-shell-bg: #f2f3f5;
+  --wb-card-bg: #ffffff;
+  --wb-border: #e5e7eb;
+  --wb-text-primary: #111827;
+  --wb-text-secondary: #6b7280;
+  --wb-text-muted: #9ca3af;
+  --wb-brand: #2563eb;
+  --wb-brand-hover: #1d4ed8;
+  --wb-success: #059669;
+  --wb-warning: #d97706;
+  --wb-danger: #dc2626;
+  --wb-info: #0284c7;
+  --wb-hero-from: #1e40af;
+  --wb-hero-to: #3b82f6;
+  --wb-radius-sm: 6px;
+  --wb-radius-md: 10px;
+  --wb-radius-lg: 12px;
+  --wb-shadow-card: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.1);
+  --wb-shadow-modal: 0 12px 32px rgba(16, 24, 40, 0.12);
+  --wb-rail-w: 228px;
+  --wb-topbar-h: 56px;
+  --wb-space-2: 8px;
+  --wb-space-3: 12px;
+  --wb-space-4: 16px;
+  --wb-space-5: 24px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--wb-text-primary);
+  background: var(--wb-shell-bg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wb-app { display: flex; min-height: 100vh; }
+
+/* —— 左侧导航：Logo + 标题 + 图标与文案并排（可读性优先） —— */
+.wb-rail {
+  width: var(--wb-rail-w);
+  min-width: var(--wb-rail-w);
+  background: var(--wb-sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: var(--wb-space-4) var(--wb-space-3);
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 200;
+  transition: transform 0.25s ease;
+}
+
+.wb-rail-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--wb-space-3);
+  padding: 4px 8px 18px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.wb-rail-logo-mark {
+  width: calc(40px * 1.2);
+  height: calc(40px * 1.2);
+  flex-shrink: 0;
+  border-radius: var(--wb-radius-md);
+  background: linear-gradient(135deg, var(--wb-hero-from), var(--wb-hero-to));
+  color: #fff;
+  font-weight: 800;
+  font-size: calc(17px * 1.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.wb-rail-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.wb-rail-brand-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--wb-sidebar-active);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.wb-rail-brand-sub {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.35;
+}
+
+.wb-rail-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.wb-rail-item {
+  width: 100%;
+  min-height: 52px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: var(--wb-radius-md);
+  background: transparent;
+  color: var(--wb-sidebar-icon);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--wb-space-3);
+  transition: background 0.15s, color 0.15s;
+  text-align: left;
+}
+
+.wb-rail-item:hover {
+  background: var(--wb-sidebar-hover);
+  color: var(--wb-sidebar-active);
+}
+
+.wb-rail-item.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--wb-sidebar-active);
+  box-shadow: inset 3px 0 0 #ffffff;
+}
+
+/* 侧栏彩色图标：统一 1.2 倍（相对原 32×32 / 14px） */
+.wb-side-icon {
+  width: calc(32px * 1.2);
+  height: calc(32px * 1.2);
+  flex-shrink: 0;
+  border-radius: var(--wb-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(14px * 1.2);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.wb-side-icon-home {
+  background: linear-gradient(135deg, #60a5fa, var(--wb-brand));
+}
+
+.wb-side-icon-insights {
+  background: linear-gradient(135deg, #34d399, #059669);
+}
+
+.wb-side-icon-campaigns {
+  background: linear-gradient(135deg, #fb923c, #ea580c);
+}
+
+.wb-side-icon-stores {
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+}
+
+.wb-side-icon-review {
+  background: linear-gradient(135deg, #f87171, var(--wb-danger));
+}
+
+.wb-side-icon-templates {
+  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+}
+
+.wb-side-label {
+  font-size: 13px;
+  font-weight: 500;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.wb-rail-item.active .wb-side-label {
+  font-weight: 600;
+}
+
+.wb-rail-foot {
+  margin-top: auto;
+  padding-top: var(--wb-space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 10px;
+}
+
+.wb-rail-foot-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--wb-success);
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.35);
+  flex-shrink: 0;
+}
+
+.wb-rail-foot-text {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.42);
+  line-height: 1.35;
+}
+
+/* —— 主壳 —— */
+.wb-shell {
+  flex: 1;
+  margin-left: var(--wb-rail-w);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.wb-topbar {
+  height: var(--wb-topbar-h);
+  background: var(--wb-card-bg);
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--wb-space-5);
+  gap: var(--wb-space-4);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.wb-topbar-left { display: flex; align-items: center; gap: var(--wb-space-3); min-width: 0; }
+.wb-topbar-title { font-size: 15px; font-weight: 600; }
+.wb-topbar-crumb { font-size: 12px; color: var(--wb-text-muted); }
+
+.wb-topbar-center { flex: 1; max-width: 420px; display: none; }
+@media (min-width: 900px) {
+  .wb-topbar-center { display: block; }
+}
+
+.wb-search {
+  display: flex;
+  align-items: center;
+  gap: var(--wb-space-2);
+  padding: 6px var(--wb-space-3);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-md);
+  background: var(--wb-shell-bg);
+}
+
+.wb-search-hint { font-size: 12px; color: var(--wb-text-muted); display: none; }
+.wb-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  outline: none;
+  min-width: 0;
+}
+
+.wb-kbd {
+  font-size: 11px;
+  color: var(--wb-text-muted);
+  border: 1px solid var(--wb-border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--wb-card-bg);
+}
+
+.wb-topbar-right { display: flex; align-items: center; gap: var(--wb-space-3); position: relative; }
+
+/* —— 顶栏 · 角色切换（用户角色管理 Demo） —— */
+.wb-role-wrap { position: relative; }
+
+.wb-role-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px 4px 4px;
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-md);
+  background: var(--wb-card-bg);
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  max-width: 220px;
+}
+
+.wb-role-trigger:hover {
+  border-color: #cbd5e1;
+  box-shadow: var(--wb-shadow-card);
+}
+
+.wb-role-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--wb-radius-sm);
+  background: linear-gradient(135deg, var(--wb-hero-from), var(--wb-hero-to));
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wb-role-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  text-align: left;
+}
+
+.wb-role-user {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--wb-text-primary);
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 140px;
+}
+
+.wb-role-label {
+  font-size: 11px;
+  color: var(--wb-text-muted);
+  line-height: 1.2;
+}
+
+.wb-role-caret {
+  font-size: 10px;
+  color: var(--wb-text-muted);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.wb-role-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 248px;
+  background: var(--wb-card-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-lg);
+  box-shadow: var(--wb-shadow-modal);
+  padding: var(--wb-space-3);
+  z-index: 400;
+}
+
+.wb-role-menu-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--wb-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 8px 8px;
+}
+
+.wb-role-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: var(--wb-radius-md);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.wb-role-option:hover {
+  background: var(--wb-shell-bg);
+}
+
+.wb-role-option.active {
+  background: #eff6ff;
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.2);
+}
+
+.wb-role-option-main {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wb-text-primary);
+}
+
+.wb-role-option-sub {
+  font-size: 11px;
+  color: var(--wb-text-secondary);
+  line-height: 1.35;
+}
+
+.wb-role-option + .wb-role-option {
+  margin-top: 4px;
+}
+
+.wb-icon-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: var(--wb-radius-md);
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--wb-text-secondary);
+  transition: background 0.15s, color 0.15s;
+}
+
+.wb-icon-btn:hover {
+  background: var(--wb-shell-bg);
+  color: var(--wb-text-primary);
+}
+
+.wb-icon-btn svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.wb-icon-btn-line svg {
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.wb-menu-btn { display: none; }
+
+.wb-user {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--wb-shell-bg);
+  border: 1px solid var(--wb-border);
+}
+
+.wb-content {
+  flex: 1;
+  padding: var(--wb-space-5);
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* —— 页面切换 —— */
+.wb-page { display: none; animation: wbFade 0.25s ease; }
+.wb-page.active { display: block; }
+
+@keyframes wbFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.wb-page-hd {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--wb-space-4);
+  margin-bottom: 0;
+}
+
+.wb-link-quiet {
+  border: none;
+  background: none;
+  font-size: 12px;
+  color: var(--wb-text-secondary);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.wb-link-quiet:hover { color: var(--wb-brand); }
+
+/* —— 工作台：统一栅格间距，模块对齐 —— */
+.wb-workbench {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wb-space-5);
+  align-items: stretch;
+}
+
+/* —— Hero + 常用 —— */
+.wb-hero-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
+  gap: var(--wb-space-5);
+  align-items: stretch;
+  margin-bottom: 0;
+}
+
+@media (max-width: 960px) {
+  .wb-hero-row { grid-template-columns: 1fr; }
+}
+
+.wb-hero {
+  border-radius: var(--wb-radius-lg);
+  padding: var(--wb-space-5);
+  background: linear-gradient(135deg, var(--wb-hero-from), var(--wb-hero-to));
+  color: #fff;
+  box-shadow: var(--wb-shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 160px;
+}
+
+.wb-hero-kicker { font-size: 12px; opacity: 0.9; margin-bottom: var(--wb-space-2); }
+.wb-hero-title { font-size: 22px; font-weight: 700; line-height: 1.3; }
+.wb-hero-desc { font-size: 13px; opacity: 0.88; margin-top: var(--wb-space-3); max-width: 560px; }
+
+.wb-common-panel {
+  background: var(--wb-card-bg);
+  border-radius: var(--wb-radius-lg);
+  border: 1px solid var(--wb-border);
+  padding: var(--wb-space-4);
+  box-shadow: var(--wb-shadow-card);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.wb-panel-hd-flush {
+  margin-bottom: var(--wb-space-3);
+}
+
+/* —— 指标看板：独立小卡片，互不连体 —— */
+.wb-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--wb-space-4);
+}
+
+@media (max-width: 1100px) {
+  .wb-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .wb-stat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.wb-stat-card {
+  background: var(--wb-card-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-lg);
+  padding: var(--wb-space-4);
+  box-shadow: var(--wb-shadow-card);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--wb-space-4);
+  min-height: 104px;
+}
+
+.wb-stat-card-accent {
+  border-left: 4px solid var(--wb-stat-accent, var(--wb-border));
+}
+
+.wb-stat-accent-amber { --wb-stat-accent: #f59e0b; }
+.wb-stat-accent-blue { --wb-stat-accent: var(--wb-brand); }
+.wb-stat-accent-green { --wb-stat-accent: var(--wb-success); }
+.wb-stat-accent-red { --wb-stat-accent: var(--wb-danger); }
+
+.wb-stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--wb-radius-md);
+  background: var(--wb-shell-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.wb-stat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.wb-stat-val {
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  color: var(--wb-text-primary);
+}
+
+.wb-stat-lbl {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wb-text-primary);
+}
+
+.wb-stat-hint {
+  font-size: 11px;
+  color: var(--wb-text-muted);
+  margin-top: 4px;
+  line-height: 1.35;
+}
+
+.wb-panel-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--wb-space-4);
+}
+
+.wb-panel-title { font-size: 16px; font-weight: 600; }
+
+/* —— 按钮 —— */
+.wb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--wb-radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.wb-btn-sm { padding: 6px 12px; font-size: 12px; }
+
+.wb-btn-primary {
+  background: var(--wb-brand);
+  color: #fff;
+}
+
+.wb-btn-primary:hover { background: var(--wb-brand-hover); }
+
+.wb-btn-ghost {
+  background: var(--wb-card-bg);
+  color: var(--wb-text-secondary);
+  border: 1px solid var(--wb-border);
+}
+
+.wb-btn-ghost:hover {
+  background: var(--wb-shell-bg);
+  color: var(--wb-text-primary);
+}
+
+/* —— 应用卡片 —— */
+.wb-app-grid {
+  display: grid;
+  gap: var(--wb-space-3);
+}
+
+.wb-app-grid-sm {
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+}
+
+.wb-app-grid-lg {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.wb-app-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--wb-space-2);
+  padding: var(--wb-space-4) var(--wb-space-2);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-md);
+  background: var(--wb-shell-bg);
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+
+.wb-app-card:hover {
+  box-shadow: var(--wb-shadow-card);
+  border-color: var(--wb-brand);
+}
+
+.wb-app-card-dashed {
+  border-style: dashed;
+  background: var(--wb-card-bg);
+}
+
+.wb-app-plus { font-size: 22px; color: var(--wb-text-muted); line-height: 1; }
+
+.wb-app-ico {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--wb-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.wb-app-ico-green { background: linear-gradient(135deg, #34d399, #059669); }
+.wb-app-ico-orange { background: linear-gradient(135deg, #fb923c, #ea580c); }
+.wb-app-ico-blue { background: linear-gradient(135deg, #60a5fa, var(--wb-brand)); }
+.wb-app-ico-red { background: linear-gradient(135deg, #f87171, var(--wb-danger)); }
+.wb-app-ico-purple { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+
+.wb-app-name { font-size: 12px; font-weight: 500; text-align: center; }
+
+.wb-app-tile {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--wb-space-3);
+  padding: var(--wb-space-4);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-md);
+  background: var(--wb-card-bg);
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+
+.wb-app-tile:hover { box-shadow: var(--wb-shadow-card); }
+
+.wb-app-tile-name { font-weight: 600; font-size: 14px; }
+.wb-app-tile-desc { font-size: 12px; color: var(--wb-text-secondary); margin-top: 2px; }
+
+.wb-tile-add {
+  border: none;
+  background: var(--wb-shell-bg);
+  padding: 6px 12px;
+  border-radius: var(--wb-radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.wb-app-tile:hover .wb-tile-add { background: var(--wb-brand); color: #fff; }
+
+/* —— 分类 Tab —— */
+.wb-cat-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: var(--wb-space-4);
+}
+
+.wb-cat-tab {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-size: 13px;
+  color: var(--wb-text-secondary);
+  cursor: pointer;
+}
+
+.wb-cat-tab:hover { background: var(--wb-shell-bg); }
+
+.wb-cat-tab.active {
+  background: #dbeafe;
+  color: var(--wb-brand);
+  font-weight: 600;
+}
+
+.wb-all-apps-card {
+  padding: var(--wb-space-5);
+}
+
+.wb-all-apps-card .wb-cat-tabs {
+  margin-bottom: var(--wb-space-4);
+}
+
+.wb-app-grid-align {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  align-items: stretch;
+}
+
+.wb-app-grid-align .wb-app-tile {
+  min-height: 92px;
+  align-items: center;
+}
+
+.wb-all-apps { margin-top: 0; }
+
+/* —— 机会 + AI —— */
+.wb-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--wb-space-5);
+  align-items: stretch;
+  margin-bottom: 0;
+}
+
+@media (max-width: 1024px) {
+  .wb-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.wb-split-equal {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.wb-card-tile {
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  height: 100%;
+}
+
+.wb-card-tile .wb-card-hd {
+  flex-shrink: 0;
+}
+
+.wb-card-tile .wb-opp-list,
+.wb-card-tile .wb-ai-block {
+  flex: 1;
+}
+
+@media (max-width: 1024px) {
+  .wb-card-tile {
+    min-height: 0;
+  }
+}
+
+.wb-opp-card {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--wb-space-3);
+  background: var(--wb-card-bg);
+  border: 1px solid var(--wb-border);
+  box-shadow: none;
+}
+
+.wb-opp-card .wb-opp-actions {
+  justify-content: flex-end;
+}
+
+.wb-card {
+  background: var(--wb-card-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-lg);
+  padding: var(--wb-space-5);
+  box-shadow: var(--wb-shadow-card);
+}
+
+.wb-card-hd {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--wb-space-3);
+  margin-bottom: var(--wb-space-4);
+}
+
+.wb-card-title { font-size: 16px; font-weight: 600; }
+
+.wb-tag {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.wb-tag-info { background: #e0f2fe; color: var(--wb-info); }
+.wb-tag-warn { background: #fef3c7; color: var(--wb-warning); }
+
+.wb-opp-list { list-style: none; display: flex; flex-direction: column; gap: var(--wb-space-4); }
+
+.wb-opp {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--wb-space-3);
+  padding: var(--wb-space-4);
+  border-radius: var(--wb-radius-md);
+}
+
+.wb-opp-title { font-weight: 600; font-size: 14px; }
+.wb-opp-meta { font-size: 12px; color: var(--wb-text-secondary); margin-top: 4px; }
+
+.wb-opp-actions { display: flex; gap: var(--wb-space-2); align-items: center; flex-wrap: wrap; }
+
+.wb-ai-panel {
+  align-self: stretch;
+}
+
+.wb-ai-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--wb-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: var(--wb-space-3);
+}
+
+.wb-ai-label:first-child { margin-top: 0; }
+
+.wb-ai-text { font-size: 13px; color: var(--wb-text-secondary); margin-top: 4px; }
+
+.wb-ai-actions { display: flex; flex-wrap: wrap; gap: var(--wb-space-2); margin-top: var(--wb-space-4); }
+
+/* —— 会员洞察 —— */
+.wb-insights {
+  display: grid;
+  grid-template-columns: 220px 1fr 260px;
+  gap: var(--wb-space-5);
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .wb-insights { grid-template-columns: 1fr; }
+}
+
+.wb-ins-col { display: flex; flex-direction: column; gap: var(--wb-space-2); }
+
+.wb-list-item {
+  text-align: left;
+  padding: 10px var(--wb-space-3);
+  border-radius: var(--wb-radius-md);
+  border: 1px solid var(--wb-border);
+  background: var(--wb-card-bg);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.wb-list-item:hover { border-color: var(--wb-brand); }
+.wb-list-item.active {
+  border-color: var(--wb-brand);
+  background: #eff6ff;
+  font-weight: 600;
+}
+
+.wb-mt { margin-top: var(--wb-space-4); }
+.wb-mt-inner { margin-top: var(--wb-space-4); padding: var(--wb-space-4); background: var(--wb-shell-bg); }
+
+.wb-layer-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--wb-border);
+}
+
+.wb-layer-row:last-child { border-bottom: none; }
+
+.wb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.wb-table th,
+.wb-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--wb-border);
+}
+
+.wb-table th { color: var(--wb-text-muted); font-weight: 500; font-size: 12px; }
+
+.wb-ol { padding-left: 1.2rem; color: var(--wb-text-secondary); font-size: 13px; }
+.wb-ol li { margin-bottom: 6px; }
+
+.wb-muted { color: var(--wb-text-secondary); }
+.wb-fs-sm { font-size: 12px; }
+
+/* —— 门店活动 —— */
+.wb-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: var(--wb-space-4);
+}
+
+.wb-tab {
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--wb-radius-md) var(--wb-radius-md) 0 0;
+  background: var(--wb-shell-bg);
+  color: var(--wb-text-secondary);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.wb-tab.active {
+  background: var(--wb-card-bg);
+  color: var(--wb-brand);
+  font-weight: 600;
+  border: 1px solid var(--wb-border);
+  border-bottom-color: var(--wb-card-bg);
+  margin-bottom: -1px;
+}
+
+.wb-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--wb-space-4);
+  font-size: 13px;
+}
+
+.wb-ul-muted {
+  margin-top: var(--wb-space-3);
+  padding-left: 1.2rem;
+  color: var(--wb-text-secondary);
+  font-size: 13px;
+}
+
+.wb-ul-muted li { margin-bottom: 6px; }
+
+.wb-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wb-space-3);
+  margin-top: var(--wb-space-5);
+}
+
+/* —— 门店执行 —— */
+.wb-store-tabs { display: flex; gap: var(--wb-space-2); margin-bottom: var(--wb-space-4); }
+
+.wb-store-tab {
+  padding: 8px 18px;
+  border-radius: var(--wb-radius-md);
+  border: 1px solid var(--wb-border);
+  background: var(--wb-card-bg);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.wb-store-tab.active {
+  border-color: var(--wb-brand);
+  color: var(--wb-brand);
+  font-weight: 600;
+}
+
+.wb-task-list { list-style: none; margin-top: var(--wb-space-3); }
+.wb-task-list li {
+  padding: var(--wb-space-3) 0;
+  border-bottom: 1px solid var(--wb-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wb-staff-card { max-width: 640px; }
+
+.wb-staff-hd {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--wb-space-4);
+}
+
+.wb-staff-name { font-size: 16px; font-weight: 700; }
+
+.wb-staff-grid {
+  display: grid;
+  gap: var(--wb-space-4);
+  margin-top: var(--wb-space-5);
+}
+
+.wb-script {
+  padding: var(--wb-space-3);
+  background: var(--wb-shell-bg);
+  border-radius: var(--wb-radius-md);
+  margin-top: var(--wb-space-2);
+  font-size: 13px;
+}
+
+.wb-risk {
+  margin-top: var(--wb-space-5);
+  padding: var(--wb-space-3);
+  background: #fef3c7;
+  border-radius: var(--wb-radius-md);
+  font-size: 12px;
+  color: #92400e;
+}
+
+/* —— 复盘 —— */
+.wb-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--wb-space-4);
+  margin-bottom: var(--wb-space-5);
+}
+
+@media (max-width: 768px) {
+  .wb-kpi-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+.wb-kpi-card { padding: var(--wb-space-4); }
+
+.wb-kpi-big {
+  font-size: 26px;
+  font-weight: 700;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.wb-funnel { display: flex; flex-direction: column; gap: var(--wb-space-3); margin-top: var(--wb-space-4); }
+
+.wb-funnel-step {
+  background: linear-gradient(90deg, #dbeafe, #eff6ff);
+  padding: 10px var(--wb-space-4);
+  border-radius: var(--wb-radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* —— 模板 —— */
+.wb-templates-toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--wb-space-5);
+  margin-bottom: var(--wb-space-5);
+  flex-wrap: wrap;
+}
+
+.wb-templates-heading {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.wb-templates-sub {
+  font-size: 13px;
+  color: var(--wb-text-secondary);
+  margin: 0;
+  max-width: 520px;
+  line-height: 1.45;
+}
+
+.wb-template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--wb-space-4);
+}
+
+.wb-template-card {
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-lg);
+  padding: var(--wb-space-5);
+  background: var(--wb-card-bg);
+  box-shadow: var(--wb-shadow-card);
+}
+
+.wb-template-card-new {
+  border-color: rgba(37, 99, 235, 0.35);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.06), var(--wb-shadow-card);
+}
+
+.wb-template-name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--wb-space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--wb-space-3);
+}
+
+.wb-template-name-row .wb-template-name {
+  margin-bottom: 0;
+}
+
+.wb-template-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: var(--wb-space-3);
+}
+
+.wb-modal-form {
+  width: min(480px, 92vw);
+}
+
+.wb-modal-form .wb-form {
+  padding: var(--wb-space-4) var(--wb-space-5) var(--wb-space-5);
+}
+
+.wb-form-group {
+  margin-bottom: var(--wb-space-4);
+}
+
+.wb-form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--wb-text-secondary);
+  margin-bottom: 6px;
+}
+
+.wb-form-required {
+  color: var(--wb-danger);
+}
+
+.wb-form-input,
+.wb-form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-md);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.wb-form-input:focus,
+.wb-form-textarea:focus {
+  outline: none;
+  border-color: var(--wb-brand);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.wb-form-textarea {
+  resize: vertical;
+  min-height: 72px;
+  line-height: 1.5;
+}
+
+.wb-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--wb-space-3);
+  padding-top: var(--wb-space-4);
+  margin-top: var(--wb-space-2);
+  border-top: 1px solid var(--wb-border);
+}
+
+/* —— Modal —— */
+.wb-modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 40, 0.45);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  padding: var(--wb-space-5);
+}
+
+.wb-modal-backdrop.open { display: flex; }
+
+.wb-modal {
+  background: var(--wb-card-bg);
+  border-radius: var(--wb-radius-lg);
+  box-shadow: var(--wb-shadow-modal);
+  width: min(720px, 92vw);
+  max-height: min(80vh, 640px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.wb-modal-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--wb-space-4) var(--wb-space-5);
+  border-bottom: 1px solid var(--wb-border);
+}
+
+.wb-modal-title { font-size: 16px; font-weight: 600; }
+
+.wb-modal-search {
+  margin: var(--wb-space-4) var(--wb-space-5) 0;
+  padding: 10px 12px;
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-md);
+  font-size: 14px;
+}
+
+.wb-modal-body {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 0;
+  flex: 1;
+  overflow: hidden;
+  min-height: 240px;
+}
+
+.wb-modal-side {
+  border-right: 1px solid var(--wb-border);
+  padding: var(--wb-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wb-modal-side button {
+  text-align: left;
+  padding: 8px 10px;
+  border: none;
+  border-radius: var(--wb-radius-sm);
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--wb-text-secondary);
+}
+
+.wb-modal-side button.active {
+  background: #eff6ff;
+  color: var(--wb-brand);
+  font-weight: 600;
+}
+
+.wb-modal-list {
+  list-style: none;
+  overflow-y: auto;
+  padding: var(--wb-space-4);
+}
+
+.wb-modal-list li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--wb-space-3);
+  align-items: center;
+  padding: var(--wb-space-3);
+  border-bottom: 1px solid var(--wb-border);
+}
+
+.wb-added { font-size: 12px; color: var(--wb-text-muted); }
+
+@media (max-width: 1024px) {
+  .wb-rail {
+    transform: translateX(-100%);
+  }
+
+  .wb-rail.open {
+    transform: translateX(0);
+    box-shadow: var(--wb-shadow-modal);
+  }
+
+  .wb-shell {
+    margin-left: 0;
+  }
+
+  .wb-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.app-hidden { display: none !important; }

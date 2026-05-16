@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数字副店长工作台 — MVP Demo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wb-app">
+    <!-- 左侧导航：Logo + 文案（对齐飞书工作台可读性） -->
+    <aside class="wb-rail" id="wbRail">
+      <div class="wb-rail-brand">
+        <div class="wb-rail-logo-mark" aria-hidden="true">副</div>
+        <div class="wb-rail-brand-text">
+          <span class="wb-rail-brand-title">数字副店长</span>
+          <span class="wb-rail-brand-sub">连锁药房 · 会员增长工作台</span>
+        </div>
+      </div>
+      <nav class="wb-rail-nav" aria-label="主导航">
+        <button type="button" class="wb-rail-item active" data-page="workbench" onclick="navigate('workbench', this)">
+          <span class="wb-side-icon wb-side-icon-home" aria-hidden="true">⌂</span>
+          <span class="wb-side-label">工作台</span>
+        </button>
+        <button type="button" class="wb-rail-item" data-page="insights" onclick="navigate('insights', this)">
+          <span class="wb-side-icon wb-side-icon-insights" aria-hidden="true">◉</span>
+          <span class="wb-side-label">会员洞察</span>
+        </button>
+        <button type="button" class="wb-rail-item" data-page="campaigns" onclick="navigate('campaigns', this)">
+          <span class="wb-side-icon wb-side-icon-campaigns" aria-hidden="true">⚑</span>
+          <span class="wb-side-label">门店活动</span>
+        </button>
+        <button type="button" class="wb-rail-item" data-page="stores" onclick="navigate('stores', this)">
+          <span class="wb-side-icon wb-side-icon-stores" aria-hidden="true">⌖</span>
+          <span class="wb-side-label">门店执行</span>
+        </button>
+        <button type="button" class="wb-rail-item" data-page="review" onclick="navigate('review', this)">
+          <span class="wb-side-icon wb-side-icon-review" aria-hidden="true">▦</span>
+          <span class="wb-side-label">活动复盘</span>
+        </button>
+        <button type="button" class="wb-rail-item" data-page="templates" onclick="navigate('templates', this)">
+          <span class="wb-side-icon wb-side-icon-templates" aria-hidden="true">◇</span>
+          <span class="wb-side-label">策略模板</span>
+        </button>
+      </nav>
+      <div class="wb-rail-foot">
+        <span class="wb-rail-foot-dot"></span>
+        <span class="wb-rail-foot-text">MVP Demo · 离线示意</span>
+      </div>
+    </aside>
+
+    <div class="wb-shell">
+      <header class="wb-topbar">
+        <div class="wb-topbar-left">
+          <button type="button" class="wb-icon-btn wb-menu-btn" id="menuBtn" aria-label="打开菜单" onclick="document.getElementById('wbRail').classList.toggle('open')">☰</button>
+          <div>
+            <div class="wb-topbar-title" id="topbarTitle">工作台</div>
+            <div class="wb-topbar-crumb" id="topbarCrumb">连锁药房 · 华东试点</div>
+          </div>
+        </div>
+        <div class="wb-topbar-center">
+          <label class="wb-search">
+            <span class="wb-search-hint">搜索</span>
+            <input type="search" class="wb-search-input" placeholder="搜索应用、活动、会员…（Demo）" autocomplete="off" />
+            <kbd class="wb-kbd">⌘K</kbd>
+          </label>
+        </div>
+        <div class="wb-topbar-right">
+          <button type="button" class="wb-icon-btn wb-icon-btn-line" title="通知" aria-label="通知">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 8a6 6 0 10-12 0c0 7-3 7-3 7h18s-3 0-3-7" />
+              <path d="M13.73 21a2 2 0 01-3.46 0" />
+            </svg>
+          </button>
+          <div class="wb-role-wrap" id="roleWrap">
+            <button type="button" class="wb-role-trigger" id="roleTrigger" aria-expanded="false" aria-haspopup="true" onclick="toggleRoleMenu(event)">
+              <span class="wb-role-avatar" id="roleAvatar">总</span>
+              <span class="wb-role-text">
+                <span class="wb-role-user" id="roleUserLine">张晨 · 运营主管</span>
+                <span class="wb-role-label" id="roleLabelLine">总部运营</span>
+              </span>
+              <span class="wb-role-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="wb-role-menu" id="roleMenu" role="menu" hidden onclick="event.stopPropagation()">
+              <div class="wb-role-menu-title">切换角色（Demo）</div>
+              <button type="button" role="menuitem" class="wb-role-option active" data-role="hq" onclick="selectRole('hq')">
+                <span class="wb-role-option-main">总部运营</span>
+                <span class="wb-role-option-sub">策略配置、审核发布、复盘</span>
+              </button>
+              <button type="button" role="menuitem" class="wb-role-option" data-role="manager" onclick="selectRole('manager')">
+                <span class="wb-role-option-main">门店店长</span>
+                <span class="wb-role-option-sub">今日任务、补货确认</span>
+              </button>
+              <button type="button" role="menuitem" class="wb-role-option" data-role="staff" onclick="selectRole('staff')">
+                <span class="wb-role-option-main">门店店员</span>
+                <span class="wb-role-option-sub">会员服务卡、履约反馈</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="wb-content">
+        <!-- ========== 工作台：Hero + 常用 + 机会 + 全部分类 ========== -->
+        <section class="wb-page active" id="page-workbench" aria-label="工作台">
+          <div class="wb-workbench">
+            <div class="wb-page-hd">
+              <button type="button" class="wb-link-quiet">显示设置</button>
+              <button type="button" class="wb-link-quiet">获取应用</button>
+            </div>
+
+            <div class="wb-hero-row">
+              <div class="wb-hero">
+                <p class="wb-hero-kicker">数字副店长 · 在线</p>
+                <h1 class="wb-hero-title">把会员资产变成今日可执行任务</h1>
+                <p class="wb-hero-desc">感知外部信号，洞察人群与复购周期，生成活动草案待您审核；门店履约与复盘闭环。</p>
+              </div>
+              <div class="wb-common-panel">
+                <div class="wb-panel-hd">
+                  <h2 class="wb-panel-title">常用应用</h2>
+                  <button type="button" class="wb-btn wb-btn-sm wb-btn-primary" onclick="openAddCommonModal()">添加常用</button>
+                </div>
+                <div class="wb-app-grid wb-app-grid-sm">
+                  <button type="button" class="wb-app-card" onclick="navigate('insights', document.querySelector('[data-page=insights]'))">
+                    <span class="wb-app-ico wb-app-ico-green">洞</span><span class="wb-app-name">会员洞察</span>
+                  </button>
+                  <button type="button" class="wb-app-card" onclick="navigate('campaigns', document.querySelector('[data-page=campaigns]'))">
+                    <span class="wb-app-ico wb-app-ico-orange">活</span><span class="wb-app-name">门店活动</span>
+                  </button>
+                  <button type="button" class="wb-app-card" onclick="navigate('stores', document.querySelector('[data-page=stores]'))">
+                    <span class="wb-app-ico wb-app-ico-blue">店</span><span class="wb-app-name">门店执行</span>
+                  </button>
+                  <button type="button" class="wb-app-card" onclick="navigate('review', document.querySelector('[data-page=review]'))">
+                    <span class="wb-app-ico wb-app-ico-red">盘</span><span class="wb-app-name">活动复盘</span>
+                  </button>
+                  <button type="button" class="wb-app-card wb-app-card-dashed" onclick="openAddCommonModal()">
+                    <span class="wb-app-plus">+</span><span class="wb-app-name">添加常用</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="wb-stat-grid" aria-label="经营指标看板">
+              <div class="wb-stat-card wb-stat-card-accent wb-stat-accent-amber">
+                <span class="wb-stat-icon">◎</span>
+                <div class="wb-stat-body">
+                  <span class="wb-stat-val">12</span>
+                  <span class="wb-stat-lbl">今日机会</span>
+                  <span class="wb-stat-hint">含天气 / 慢病 / 舆情</span>
+                </div>
+              </div>
+              <div class="wb-stat-card wb-stat-card-accent wb-stat-accent-blue">
+                <span class="wb-stat-icon">⚑</span>
+                <div class="wb-stat-body">
+                  <span class="wb-stat-val">5</span>
+                  <span class="wb-stat-lbl">待审核活动</span>
+                  <span class="wb-stat-hint">需总部确认后下发</span>
+                </div>
+              </div>
+              <div class="wb-stat-card wb-stat-card-accent wb-stat-accent-green">
+                <span class="wb-stat-icon">👥</span>
+                <div class="wb-stat-body">
+                  <span class="wb-stat-val">8.2万</span>
+                  <span class="wb-stat-lbl">预计可转化会员</span>
+                  <span class="wb-stat-hint">基于人群包估算</span>
+                </div>
+              </div>
+              <div class="wb-stat-card wb-stat-card-accent wb-stat-accent-red">
+                <span class="wb-stat-icon">📦</span>
+                <div class="wb-stat-body">
+                  <span class="wb-stat-val">7</span>
+                  <span class="wb-stat-lbl">高风险缺货 SKU</span>
+                  <span class="wb-stat-hint">低于安全库存预警</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="wb-split wb-split-equal">
+              <div class="wb-card wb-card-tile">
+                <div class="wb-card-hd">
+                  <h2 class="wb-card-title">今日机会信号</h2>
+                  <span class="wb-tag wb-tag-info">来源标注 · 弱感知</span>
+                </div>
+                <ul class="wb-opp-list">
+                  <li class="wb-opp wb-opp-card">
+                    <div>
+                      <div class="wb-opp-title">降温健康提醒 · 南京区域</div>
+                      <div class="wb-opp-meta">来源：信号感知 · 协同：会员洞察、库存履约</div>
+                    </div>
+                    <div class="wb-opp-actions">
+                      <button type="button" class="wb-btn wb-btn-sm wb-btn-primary" onclick="navigate('campaigns', document.querySelector('[data-page=campaigns]'))">生成活动</button>
+                      <button type="button" class="wb-btn wb-btn-sm wb-btn-ghost" onclick="navigate('insights', document.querySelector('[data-page=insights]'))">查看人群</button>
+                    </div>
+                  </li>
+                  <li class="wb-opp wb-opp-card">
+                    <div>
+                      <div class="wb-opp-title">慢病复购窗口 · 1,286 人</div>
+                      <div class="wb-opp-meta">来源：会员洞察 · 25–35 天周期</div>
+                    </div>
+                    <div class="wb-opp-actions">
+                      <button type="button" class="wb-btn wb-btn-sm wb-btn-primary" onclick="navigate('campaigns', document.querySelector('[data-page=campaigns]'))">生成活动</button>
+                      <button type="button" class="wb-btn wb-btn-sm wb-btn-ghost" onclick="navigate('insights', document.querySelector('[data-page=insights]'))">查看人群</button>
+                    </div>
+                  </li>
+                  <li class="wb-opp wb-opp-card">
+                    <div>
+                      <div class="wb-opp-title">舆情 · 流感讨论升温</div>
+                      <div class="wb-opp-meta">来源：信号感知 · 监测中</div>
+                    </div>
+                    <div class="wb-opp-actions">
+                      <button type="button" class="wb-btn wb-btn-sm wb-btn-ghost">忽略</button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="wb-card wb-card-tile wb-ai-panel">
+                <div class="wb-card-hd">
+                  <h2 class="wb-card-title">AI 策略助手</h2>
+                </div>
+                <div class="wb-ai-block">
+                  <p class="wb-ai-label">触发原因</p>
+                  <p class="wb-ai-text">检测到明日南京降温约 9℃，历史数据显示抗过敏/感冒关联品类需求上升。</p>
+                  <p class="wb-ai-label">推荐动作</p>
+                  <p class="wb-ai-text">生成「降温健康关怀」草案 → 审核券包与触达时段 → 下发门店任务与补货建议。</p>
+                  <div class="wb-ai-actions">
+                    <button type="button" class="wb-btn wb-btn-sm wb-btn-primary" onclick="navigate('campaigns', document.querySelector('[data-page=campaigns]'))">保存为活动草案</button>
+                    <button type="button" class="wb-btn wb-btn-sm wb-btn-ghost">调整券包</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wb-card wb-all-apps-card">
+              <div class="wb-panel-hd wb-panel-hd-flush">
+                <h2 class="wb-panel-title">全部应用</h2>
+              </div>
+              <div class="wb-cat-tabs" role="tablist">
+                <button type="button" class="wb-cat-tab active" data-cat="recent" onclick="filterApps(this,'recent')">最近使用</button>
+                <button type="button" class="wb-cat-tab" data-cat="growth" onclick="filterApps(this,'growth')">会员增长</button>
+                <button type="button" class="wb-cat-tab" data-cat="store" onclick="filterApps(this,'store')">门店履约</button>
+                <button type="button" class="wb-cat-tab" data-cat="data" onclick="filterApps(this,'data')">数据分析</button>
+              </div>
+              <div class="wb-app-grid wb-app-grid-lg wb-app-grid-align" id="allAppsGrid">
+                <div class="wb-app-tile" data-cats="recent growth" onclick="navigate('insights', document.querySelector('[data-page=insights]'))">
+                  <span class="wb-app-ico wb-app-ico-green">洞</span>
+                  <div><div class="wb-app-tile-name">会员洞察</div><div class="wb-app-tile-desc">人群包、分层、推荐原因解释</div></div>
+                  <button type="button" class="wb-tile-add">进入</button>
+                </div>
+                <div class="wb-app-tile" data-cats="recent growth" onclick="navigate('campaigns', document.querySelector('[data-page=campaigns]'))">
+                  <span class="wb-app-ico wb-app-ico-orange">活</span>
+                  <div><div class="wb-app-tile-name">门店活动</div><div class="wb-app-tile-desc">活动草案、审核、发布与状态流转</div></div>
+                  <button type="button" class="wb-tile-add">进入</button>
+                </div>
+                <div class="wb-app-tile" data-cats="growth" onclick="navigate('templates', document.querySelector('[data-page=templates]'))">
+                  <span class="wb-app-ico wb-app-ico-purple">模</span>
+                  <div><div class="wb-app-tile-name">策略模板</div><div class="wb-app-tile-desc">沉淀可复用策略资产</div></div>
+                  <button type="button" class="wb-tile-add">进入</button>
+                </div>
+                <div class="wb-app-tile" data-cats="recent store" onclick="navigate('stores', document.querySelector('[data-page=stores]'))">
+                  <span class="wb-app-ico wb-app-ico-blue">店</span>
+                  <div><div class="wb-app-tile-name">门店执行</div><div class="wb-app-tile-desc">店长任务、店员服务卡、补货确认</div></div>
+                  <button type="button" class="wb-tile-add">进入</button>
+                </div>
+                <div class="wb-app-tile" data-cats="data" onclick="navigate('review', document.querySelector('[data-page=review]'))">
+                  <span class="wb-app-ico wb-app-ico-red">盘</span>
+                  <div><div class="wb-app-tile-name">活动复盘</div><div class="wb-app-tile-desc">漏斗、结论、优化建议</div></div>
+                  <button type="button" class="wb-tile-add">进入</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 会员洞察 ========== -->
+        <section class="wb-page" id="page-insights" aria-label="会员洞察">
+          <div class="wb-insights">
+            <aside class="wb-ins-col">
+              <h2 class="wb-card-title">人群包</h2>
+              <button type="button" class="wb-list-item active">降温健康关怀目标人群</button>
+              <button type="button" class="wb-list-item">慢病即将复购</button>
+              <button type="button" class="wb-list-item">沉睡 180 天</button>
+              <div class="wb-card wb-mt">
+                <div class="wb-card-title wb-fs-sm">分层概览</div>
+                <div class="wb-layer-row"><span>慢病会员</span><strong>2.48万</strong></div>
+                <div class="wb-layer-row"><span>即将复购</span><strong>1,286</strong></div>
+                <div class="wb-layer-row"><span>天气敏感</span><strong>8,230</strong></div>
+              </div>
+            </aside>
+            <div class="wb-ins-main wb-card">
+              <div class="wb-card-hd">
+                <h2 class="wb-card-title">会员列表（示意）</h2>
+                <button type="button" class="wb-btn wb-btn-sm wb-btn-primary" onclick="navigate('campaigns', document.querySelector('[data-page=campaigns]'))">用于生成活动</button>
+              </div>
+              <table class="wb-table">
+                <thead><tr><th>会员</th><th>标签</th><th>最近购药</th><th>推荐原因摘要</th></tr></thead>
+                <tbody>
+                  <tr><td>张**</td><td>高血压 · 高价值</td><td>降压药 · 28 天前</td><td>进入复购窗口</td></tr>
+                  <tr><td>李**</td><td>鼻炎易感</td><td>氯雷他定 · 45 天前</td><td>降温关联场景</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <aside class="wb-ins-col wb-card">
+              <h2 class="wb-card-title">推荐原因解释</h2>
+              <ol class="wb-ol">
+                <li>近 90 天购买过感冒/鼻炎/止咳相关品类。</li>
+                <li>所属区域明日降温，历史转化高于均值。</li>
+                <li>近 7 天未被同类活动触达（冷却）。</li>
+              </ol>
+              <p class="wb-muted wb-fs-sm">协同：会员洞察 Agent · 药品匹配 Agent</p>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ========== 门店活动（原策略运营页） ========== -->
+        <section class="wb-page" id="page-campaigns" aria-label="门店活动">
+          <div class="wb-tabs" role="tablist">
+            <button type="button" class="wb-tab active">草案</button>
+            <button type="button" class="wb-tab">待审核</button>
+            <button type="button" class="wb-tab">待开展</button>
+            <button type="button" class="wb-tab">进行中</button>
+            <button type="button" class="wb-tab">已完成</button>
+          </div>
+          <div class="wb-card wb-mt">
+            <div class="wb-card-hd">
+              <h2 class="wb-card-title">降温健康关怀活动</h2>
+              <span class="wb-tag wb-tag-warn">待审核</span>
+            </div>
+            <div class="wb-detail-grid">
+              <div><span class="wb-muted">触发来源</span><div>天气降温信号</div></div>
+              <div><span class="wb-muted">目标人群</span><div>降温健康关怀目标人群 · 8,230 人</div></div>
+              <div><span class="wb-muted">券包</span><div>满 59 减 8 · 满 99 减 15</div></div>
+              <div><span class="wb-muted">触达</span><div>企微 + 小程序 · 今晚 20:00</div></div>
+            </div>
+            <div class="wb-card wb-mt-inner">
+              <div class="wb-card-title wb-fs-sm">AI 判断依据（可解释）</div>
+              <ul class="wb-ul-muted">
+                <li>天气信号：南京明日降温 9℃</li>
+                <li>会员信号：8,230 人近 90 天相关品类购买</li>
+                <li>库存信号：大部门店可承接（Demo）</li>
+              </ul>
+            </div>
+            <div class="wb-row-actions">
+              <button type="button" class="wb-btn wb-btn-primary">审核通过</button>
+              <button type="button" class="wb-btn wb-btn-ghost" onclick="navigate('insights', document.querySelector('[data-page=insights]'))">调整人群</button>
+              <button type="button" class="wb-btn wb-btn-ghost">调整券包</button>
+              <button type="button" class="wb-btn wb-btn-ghost" onclick="navigate('stores', document.querySelector('[data-page=stores]'))">下发门店预览</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 门店执行 ========== -->
+        <section class="wb-page" id="page-stores" aria-label="门店执行">
+          <div class="wb-store-tabs">
+            <button type="button" class="wb-store-tab active" onclick="switchStoreView(this,'manager')">店长视图</button>
+            <button type="button" class="wb-store-tab" onclick="switchStoreView(this,'staff')">店员视图</button>
+          </div>
+          <div id="store-manager">
+            <div class="wb-split">
+              <div class="wb-card">
+                <h2 class="wb-card-title">今日重点任务</h2>
+                <ul class="wb-task-list">
+                  <li><strong>降温关怀承接</strong><span class="wb-muted">影响 186 人 · 今日 18:00 前</span></li>
+                  <li><strong>慢病复购提醒</strong><span class="wb-muted">42 人 · 今日 20:00 前</span></li>
+                </ul>
+              </div>
+              <div class="wb-card">
+                <h2 class="wb-card-title">补货建议（待确认）</h2>
+                <table class="wb-table">
+                  <thead><tr><th>SKU</th><th>建议</th><th>原因</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td>感冒灵</td><td>+30</td><td>明日降温</td><td><button type="button" class="wb-btn wb-btn-sm wb-btn-primary">确认</button></td></tr>
+                    <tr><td>鼻炎喷剂</td><td>+15</td><td>场景关联</td><td><button type="button" class="wb-btn wb-btn-sm wb-btn-ghost">微调</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div id="store-staff" hidden>
+            <div class="wb-card wb-staff-card">
+              <div class="wb-staff-hd">
+                <div>
+                  <div class="wb-staff-name">张先生 · 高血压 · 高价值</div>
+                  <div class="wb-muted">上次购降压药 · 28 天前 · 周期约 30 天</div>
+                </div>
+                <span class="wb-tag wb-tag-info">慢病复购</span>
+              </div>
+              <div class="wb-staff-grid">
+                <div>
+                  <div class="wb-muted wb-fs-sm">可用优惠</div>
+                  <div>慢病满 99 减 10</div>
+                </div>
+                <div>
+                  <div class="wb-muted wb-fs-sm">推荐话术（可复制）</div>
+                  <div class="wb-script">张先生，您的降压药快到复购周期了，今天到店备药可用慢病券。</div>
+                  <button type="button" class="wb-btn wb-btn-sm wb-btn-ghost">复制话术</button>
+                </div>
+              </div>
+              <div class="wb-risk">风险提示：本系统仅提供健康关怀与购药提醒，不替代医生诊疗与用药指导。</div>
+              <div class="wb-row-actions">
+                <button type="button" class="wb-btn wb-btn-primary">标记已购买</button>
+                <button type="button" class="wb-btn wb-btn-ghost">不感兴趣</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 活动复盘 ========== -->
+        <section class="wb-page" id="page-review" aria-label="活动复盘">
+          <div class="wb-kpi-row">
+            <div class="wb-card wb-kpi-card"><div class="wb-muted">触达</div><div class="wb-kpi-big">8,230</div></div>
+            <div class="wb-card wb-kpi-card"><div class="wb-muted">核销</div><div class="wb-kpi-big">1,200</div></div>
+            <div class="wb-card wb-kpi-card"><div class="wb-muted">活动销售</div><div class="wb-kpi-big">¥18.6万</div></div>
+            <div class="wb-card wb-kpi-card"><div class="wb-muted">库存消化</div><div class="wb-kpi-big">41%</div></div>
+          </div>
+          <div class="wb-split">
+            <div class="wb-card">
+              <h2 class="wb-card-title">转化漏斗（示意）</h2>
+              <div class="wb-funnel">
+                <div class="wb-funnel-step" style="width:100%">触达 8,230</div>
+                <div class="wb-funnel-step" style="width:78%">领券 2,468</div>
+                <div class="wb-funnel-step" style="width:52%">核销 1,200</div>
+              </div>
+            </div>
+            <div class="wb-card">
+              <h2 class="wb-card-title">AI 复盘结论</h2>
+              <ul class="wb-ul-muted">
+                <li>儿童家庭会员核销率显著高于均值。</li>
+                <li>近 90 天买过止咳药的会员转化更高。</li>
+                <li>部分低库存门店拖累核销，建议降低触达权重。</li>
+              </ul>
+              <div class="wb-row-actions wb-mt">
+                <button type="button" class="wb-btn wb-btn-primary" onclick="navigate('templates', document.querySelector('[data-page=templates]'))">保存为策略模板</button>
+                <button type="button" class="wb-btn wb-btn-ghost" onclick="navigate('workbench', document.querySelector('[data-page=workbench]'))">返回工作台</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 策略模板 ========== -->
+        <section class="wb-page" id="page-templates" aria-label="策略模板">
+          <div class="wb-templates-toolbar">
+            <div>
+              <h2 class="wb-templates-heading">策略模板</h2>
+              <p class="wb-templates-sub">沉淀可复用策略，支持一键生成门店活动草案（Demo）</p>
+            </div>
+            <button type="button" class="wb-btn wb-btn-primary" onclick="openTemplateModal()">新增策略模板</button>
+          </div>
+          <div class="wb-template-grid" id="templateGrid">
+            <div class="wb-template-card">
+              <div class="wb-template-name">降温健康关怀模板</div>
+              <div class="wb-muted wb-fs-sm">触发：降温 &gt; 8℃ · 人群：呼吸抗过敏关联 · 券：满 59 减 8</div>
+              <div class="wb-row-actions">
+                <button type="button" class="wb-btn wb-btn-sm wb-btn-primary" onclick="navigate('campaigns', document.querySelector('[data-page=campaigns]'))">一键生成草案</button>
+              </div>
+            </div>
+            <div class="wb-template-card">
+              <div class="wb-template-name">慢病复购模板</div>
+              <div class="wb-muted wb-fs-sm">触发：用药周期 D25–35 · 券：慢病满减</div>
+              <div class="wb-row-actions">
+                <button type="button" class="wb-btn wb-btn-sm wb-btn-primary" onclick="navigate('campaigns', document.querySelector('[data-page=campaigns]'))">一键生成草案</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- 新增策略模板 Modal -->
+  <div class="wb-modal-backdrop" id="modalNewTemplate" aria-hidden="true" onclick="if(event.target===this)closeTemplateModal()">
+    <div class="wb-modal wb-modal-form" role="dialog" aria-labelledby="modalTplTitle">
+      <div class="wb-modal-hd">
+        <h2 id="modalTplTitle" class="wb-modal-title">新增策略模板</h2>
+        <button type="button" class="wb-icon-btn" onclick="closeTemplateModal()" aria-label="关闭">×</button>
+      </div>
+      <form class="wb-form" id="formNewTemplate" onsubmit="submitNewTemplate(event)">
+        <div class="wb-form-group">
+          <label class="wb-form-label" for="tplName">模板名称 <span class="wb-form-required">*</span></label>
+          <input type="text" id="tplName" name="name" class="wb-form-input" required placeholder="例如：花粉季鼻炎关怀" maxlength="80" />
+        </div>
+        <div class="wb-form-group">
+          <label class="wb-form-label" for="tplTrigger">触发条件</label>
+          <input type="text" id="tplTrigger" name="trigger" class="wb-form-input" placeholder="例如：花粉指数 &gt; 4 级 · 华东区域" maxlength="120" />
+        </div>
+        <div class="wb-form-group">
+          <label class="wb-form-label" for="tplRule">人群 / 券包说明</label>
+          <textarea id="tplRule" name="rule" class="wb-form-textarea" rows="3" placeholder="例如：过敏性鼻炎易感人群 · 满 59 减 10"></textarea>
+        </div>
+        <div class="wb-form-actions">
+          <button type="button" class="wb-btn wb-btn-ghost" onclick="closeTemplateModal()">取消</button>
+          <button type="submit" class="wb-btn wb-btn-primary">保存模板</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 添加常用 Modal -->
+  <div class="wb-modal-backdrop" id="modalAddCommon" aria-hidden="true" onclick="if(event.target===this)closeAddCommonModal()">
+    <div class="wb-modal" role="dialog" aria-labelledby="modalTitle">
+      <div class="wb-modal-hd">
+        <h2 id="modalTitle" class="wb-modal-title">添加常用</h2>
+        <button type="button" class="wb-icon-btn" onclick="closeAddCommonModal()" aria-label="关闭">×</button>
+      </div>
+      <input type="search" class="wb-modal-search" placeholder="搜索应用…" />
+      <div class="wb-modal-body">
+        <nav class="wb-modal-side">
+          <button type="button" class="active">最近使用</button>
+          <button type="button">会员增长</button>
+          <button type="button">门店履约</button>
+        </nav>
+        <ul class="wb-modal-list">
+          <li><span class="wb-app-ico wb-app-ico-purple">模</span><div><strong>策略模板</strong><div class="wb-muted wb-fs-sm">沉淀与复用策略</div></div><span class="wb-added">已添加</span></li>
+          <li><span class="wb-app-ico wb-app-ico-red">盘</span><div><strong>活动复盘</strong><div class="wb-muted wb-fs-sm">漏斗与结论</div></div><button type="button" class="wb-btn wb-btn-sm wb-btn-primary">添加</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
